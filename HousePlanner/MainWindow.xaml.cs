@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DBManager;
+using HousePlanner.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,12 @@ namespace HousePlanner
         public MainWindow()
         {
             InitializeComponent();
+            
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
