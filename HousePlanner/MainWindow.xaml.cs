@@ -1,5 +1,6 @@
 ﻿using DBManager;
 using HousePlanner.Models;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +29,6 @@ namespace HousePlanner
             
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
+        
     }
 }
