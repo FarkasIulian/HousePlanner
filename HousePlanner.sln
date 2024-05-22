@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HousePlanner", "HousePlanner\HousePlanner.csproj", "{60B0E023-91B0-4A2D-BBBE-D756C6177AD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HousePlanner", "HousePlanner\HousePlanner.csproj", "{60B0E023-91B0-4A2D-BBBE-D756C6177AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBManager", "DBManager\DBManager.csproj", "{6036FA50-399E-43BE-80CA-41EC000E8C37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBManager", "DBManager\DBManager.csproj", "{6036FA50-399E-43BE-80CA-41EC000E8C37}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HousePlannerCore", "HousePlannerCore\HousePlannerCore.csproj", "{4FEB27CF-BDF7-4EC7-8C14-5D71E8F047A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6036FA50-399E-43BE-80CA-41EC000E8C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6036FA50-399E-43BE-80CA-41EC000E8C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6036FA50-399E-43BE-80CA-41EC000E8C37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FEB27CF-BDF7-4EC7-8C14-5D71E8F047A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FEB27CF-BDF7-4EC7-8C14-5D71E8F047A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FEB27CF-BDF7-4EC7-8C14-5D71E8F047A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FEB27CF-BDF7-4EC7-8C14-5D71E8F047A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
