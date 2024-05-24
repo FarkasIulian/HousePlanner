@@ -1,4 +1,5 @@
-﻿<Window x:Class="HousePlanner.Shell"
+﻿<dx:ThemedWindow x:Class="HousePlanner.Shell"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,8 +7,9 @@
         xmlns:prism="http://prismlibrary.com/"
         xmlns:local="clr-namespace:HousePlanner"
         mc:Ignorable="d"
-        Title="Shell" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="Shell" Height="450" Width="350">
     <Grid>
         <ContentControl prism:RegionManager.RegionName="MainWindowRegion"/>
     </Grid>
-</Window>
+</dx:ThemedWindow>

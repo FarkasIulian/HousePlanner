@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DBManager
 {
-    public class DbManager
+    public class DbManagerService
     {
         private Dictionary<string, string> queryDictionary = new Dictionary<string, string>
         {
@@ -33,7 +33,7 @@ namespace DBManager
             { "UpdateRoom","https://initdb.azurewebsites.net/api/updateRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" }
         };
 
-        public DbManager()
+        public DbManagerService()
         {
 
         }
