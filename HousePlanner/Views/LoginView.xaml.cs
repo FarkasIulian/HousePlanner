@@ -1,5 +1,6 @@
-﻿using HousePlanner.Models;
-using HousePlannerCore;
+﻿using HousePlannerCore;
+using HousePlannerCore.Events;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +16,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HousePlanner
+namespace HousePlanner.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class MainWindow : UserControl
+    public partial class LoginView : UserControl
     {
-        public MainWindow()
+        public LoginView(IEventAggregator ea)
         {
             InitializeComponent();
         }
+
+
+        
     }
 }

@@ -8,8 +8,9 @@
         xmlns:local="clr-namespace:HousePlanner"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+                 ResizeMode="NoResize"
         Title="Shell" Height="450" Width="350">
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="MainWindowRegion"/>
+        <ContentControl prism:RegionManager.RegionName="LoginViewRegion"/>
     </Grid>
 </dx:ThemedWindow>

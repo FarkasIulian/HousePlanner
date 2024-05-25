@@ -1,5 +1,6 @@
 ﻿using DBManager;
 using DevExpress.Xpf.Core;
+using HousePlanner.Views;
 using HousePlannerCore;
 using Prism.DryIoc;
 using Prism.Events;
@@ -22,7 +23,7 @@ namespace HousePlanner
             
             var rm = Container.Resolve<IRegionManager>();
             
-            rm.RegisterViewWithRegion<MainWindow>("MainWindowRegion");
+            rm.RegisterViewWithRegion<LoginView>("LoginViewRegion");
 
             var shell = Container.Resolve<Shell>();
             
@@ -33,7 +34,6 @@ namespace HousePlanner
         {
             //to do when get home, remove reference to DbManagerService, initialize it in Core
             EventAggregatorProvider.EventAggregator = Container.Resolve<IEventAggregator>();
-            DbManagerProvider.SetManager(Container);
         }
     }
 }

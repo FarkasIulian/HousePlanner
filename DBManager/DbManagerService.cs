@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Text.Json.Nodes;
 using System.Text;
+using Prism.Events;
 
 namespace DBManager
 {
@@ -33,9 +34,8 @@ namespace DBManager
             { "UpdateRoom","https://initdb.azurewebsites.net/api/updateRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" }
         };
 
-        public DbManagerService()
+        public DbManagerService(IEventAggregator ea)
         {
-
         }
 
         public async Task<int> Insert<T>(T model)
