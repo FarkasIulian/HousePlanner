@@ -1,4 +1,5 @@
-﻿using HousePlannerCore;
+﻿using DevExpress.Xpf.Core;
+using HousePlannerCore;
 using HousePlannerCore.Events;
 using Prism.Events;
 using System;
@@ -21,11 +22,17 @@ namespace HousePlanner.Views
     /// <summary>
     /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class LoginView : ThemedWindow
     {
         public LoginView(IEventAggregator ea)
         {
             InitializeComponent();
+            ea.GetEvent<OnLoginClosed>().Subscribe(
+                () =>
+                {
+                    this.DialogResult = true;
+                    this.Close();
+                });
         }
 
 

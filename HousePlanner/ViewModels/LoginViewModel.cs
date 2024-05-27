@@ -97,18 +97,17 @@ namespace HousePlanner.ViewModels
         private async void LoginLogic()
         {
             if (!ValidateCredentials())
-                return;
-
-            var user = await dbManager.GetFiltered<User>(nameof(User.Email), username.Trim());
-            if (user.Count() == 0)
-            {
-                //  MessageBox.Show("Aiurea tenis nu existi");
-                return;
-            }
-            //MessageBox.Show("Rege traiesti");
-
+            //var user = await dbManager.GetFiltered<User>(nameof(User.Email), username.Trim());
+            //if (user.Count() == 0)
+            //{
+            //    return;
+            //}
+            HandleLogin();
         }
 
-
+        private void HandleLogin()
+        {
+            eventAggregator.GetEvent<OnLoginClosed>().Publish();
+        }
     }
 }
