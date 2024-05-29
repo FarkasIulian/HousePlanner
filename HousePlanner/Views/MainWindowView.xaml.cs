@@ -63,14 +63,24 @@ namespace HousePlanner.Views
         {
             Rect hitbox = new Rect(clickedPoint.X, clickedPoint.Y, buttonToAdd.Width, buttonToAdd.Height);
 
-            foreach (Button child in RoomsGrid.Children)
+            foreach (var child in RoomsGrid.Children)
             {
-                var rect = new Rect(Canvas.GetLeft(child), Canvas.GetTop(child), child.ActualWidth, child.ActualHeight);
-                if (hitbox.IntersectsWith(rect))
+                if (child.GetType() == buttonToAdd.GetType())
                 {
-                    MessageBox.Show("Loveste");
-                    return true;
+                    
+                    var rect = new Rect(Canvas.GetLeft(child as Button), Canvas.GetTop(child as Button), ((Button)child).ActualWidth, ((Button)child).ActualHeight);
+                    if (hitbox.IntersectsWith(rect))
+                    {
+                        MessageBox.Show("Loveste");
+                        return true;
+                    }
+                    if (hitbox.X + rect.Width > RoomsGrid.Width || hitbox.Y + rect.Height > RoomsGrid.Height)
+                    {
+                        MessageBox.Show("Out of grid");
+                        return true;
+                    }
                 }
+                
             }
             return false;
         }

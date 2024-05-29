@@ -9,9 +9,9 @@
         xmlns:local="clr-namespace:HousePlanner"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized"
-        Title="Shell" >
+        WindowState="Normal"
+        Title="Shell"  >
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="MainWindowViewRegion"/>
+            <ContentControl prism:RegionManager.RegionName="MainWindowViewRegion"/>
     </Grid>
 </dx:ThemedWindow>
