@@ -1,0 +1,137 @@
+﻿<dx:ThemedWindow x:Class="HousePlanner.Views.SignUpView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HousePlanner.Views"
+             xmlns:mvvm="http://prismlibrary.com/"
+             mc:Ignorable="d" 
+             Height="450" Width="325"
+             ResizeMode="NoResize"
+             WindowStartupLocation="CenterScreen"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
+             Title="SignUp">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock 
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="0,0,0,10"
+            Text="Sign up!"
+            FontSize="45"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+                   />
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+            <TextBlock
+                Text="Email: "
+                FontSize="16"
+                HorizontalAlignment="Center"
+                Margin="5,10,0,0"
+                />
+
+            <TextBlock
+    Text="Password: "
+    FontSize="16"
+    HorizontalAlignment="Center"
+    Margin="5,17,0,5"
+    />
+            <TextBlock
+Text="Repeat password: "
+FontSize="16"
+HorizontalAlignment="Center"
+Margin="5,16,0,5"
+/>
+            <TextBlock
+Text="First name: "
+FontSize="16"
+HorizontalAlignment="Center"
+Margin="5,15,0,5"
+/>
+
+            <TextBlock
+Text="Last name: "
+FontSize="16"
+HorizontalAlignment="Center"
+Margin="5,15,0,5"
+/>
+            
+
+
+
+
+
+
+
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            
+            <TextBox 
+                Margin="5,10,0,0"
+    Text="{Binding EmailTextBox}"
+    HorizontalAlignment="Center"
+    Width="150"
+    />
+            <TextBox Margin="5,15,0,5"
+Text="{Binding PasswordTextBox}"
+HorizontalAlignment="Center"
+Width="150"/>
+            <TextBox Margin="5,15,0,5"
+Text="{Binding RepeatPasswordTextBox}"
+HorizontalAlignment="Center"
+Width="150"/>
+            <TextBox Margin="5,15,0,5"
+Text="{Binding FirstNameTextBox}"
+HorizontalAlignment="Center"
+Width="150"/>
+            <TextBox Margin="5,15,0,5"
+Text="{Binding LastNameTextBox}"
+HorizontalAlignment="Center"
+Width="150"/>
+
+        </StackPanel>
+        <TextBlock
+             Grid.Row="2" Grid.Column="0"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            FontSize="16"
+    Text="Errors: "
+    />
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Grid.Column="1">
+        <TextBlock
+            
+            FontSize="16"
+            Text="{Binding Errors}"
+            Foreground="Red"
+            />
+        </ScrollViewer>
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" >
+            <Button
+                Content="Sign Up!"
+                Command="{Binding SignupCommand}"
+                Margin="20"
+                />
+            <Button
+    Content="Cancel!"
+                Click="Button_Click"
+    Margin="20"
+    />
+            
+            
+
+        </StackPanel>
+    </Grid>
+</dx:ThemedWindow>
+

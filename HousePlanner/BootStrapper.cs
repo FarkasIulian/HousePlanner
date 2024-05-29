@@ -22,17 +22,18 @@ namespace HousePlanner
             ApplicationThemeHelper.ApplicationThemeName = Theme.VS2019DarkName;
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             var rm = Container.Resolve<IRegionManager>();
-
+            Container.Resolve<SignUpView>();
             var loginView = Container.Resolve<LoginView>();
             if (!(bool)loginView.ShowDialog())
                 Environment.Exit(0);
 
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
-
             rm.RegisterViewWithRegion<MainWindowView>("MainWindowViewRegion");
 
             var shell = Container.Resolve<Shell>();
+            
+            Application.Current.MainWindow = shell;
             
             return shell;
         }

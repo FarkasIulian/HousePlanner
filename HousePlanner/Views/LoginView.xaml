@@ -10,7 +10,8 @@
              Height="450" Width="350"
              ResizeMode="NoResize"
              WindowStartupLocation="CenterScreen"
-             mvvm:ViewModelLocator.AutoWireViewModel="True">
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
+             Title="Login">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -22,25 +23,29 @@
             <RowDefinition Height="3*"/>
             <RowDefinition />
         </Grid.RowDefinitions>
+        <TextBlock 
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="0,0,0,25"
+            Text="Welcome!"
+            FontSize="45"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+                   /> 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
             <TextBlock
                 Text="Username: "
                 FontSize="16"
                 HorizontalAlignment="Center"
-                Margin="0,0,0,10"
+                Margin="0,10,0,10"
                 />
             <TextBox 
                 Text="{Binding UsernameTextBox}"
                 HorizontalAlignment="Center"
                 Width="150"
                 />
-            <TextBlock
-                Text="Username cannot be empty!"
-                HorizontalAlignment="Center"
-                Margin="0,5,0,5"
-                Visibility="{Binding IsUsernameValid}"
-                Foreground="Red"
-                />
+            
             <TextBlock
     Text="Password: "
     FontSize="16"
@@ -48,26 +53,33 @@
     Margin="0,5,0,5"
     />
             <TextBox
-                x:Name="ceva"
                 Text="{Binding PasswordTextBox}"
                 HorizontalAlignment="Center"
-                ToolTipService.ToolTip="asd"
-                ToolTipService.IsEnabled="{Binding IsEnabled}"
                 Width="150"/>
             <TextBlock
-    Text="Password cannot be empty!"
+    Text="{Binding ErrorText}"
     HorizontalAlignment="Center"
-    Margin="0,5,0,5"
-    Visibility="{Binding IsPasswordValid}"
+    Margin="0,15,0,5"
+    Visibility="{Binding IsErrorTextVisible}"
     Foreground="Red"
     />
 
 
 
-            <StackPanel Margin="0,40,0,0"  HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel Margin="0,25,0,0"  HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button Content="Log in" Height="30" Width="70" Command="{Binding LoginCommand}"/>
                 <Button Margin="10,0,0,0"  Height="30" Width="70" Content="Sign up" Command="{Binding SignupCommand}"/>
             </StackPanel>
         </StackPanel>
+        <Button
+            Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1"
+            Content="Forgot password?"
+            Margin="10,0,0,15"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"
+            Background="Transparent"
+            BorderThickness="0"
+            Command="{Binding ForgotPasswordCommand}"
+            />
     </Grid>
 </dx:ThemedWindow>

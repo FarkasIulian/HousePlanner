@@ -31,7 +31,7 @@ namespace HousePlanner.ViewModels
         public ICommand<string> ChangeFloorCommand => new DelegateCommand<string>(ChangeFloor);
         public System.Windows.Input.ICommand AddNewRoomCommand => new DelegateCommand(AddRoom);
 
-        private Point pointClickedOnGrid;
+
         private IEventAggregator eventAggregator;
         
 
