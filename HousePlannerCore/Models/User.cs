@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HousePlanner.Models
+namespace HousePlannerCore.Models
 {
     public  class User
     {

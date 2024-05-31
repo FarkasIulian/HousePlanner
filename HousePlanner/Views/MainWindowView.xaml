@@ -6,6 +6,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HousePlanner.Views"
+        xmlns:mvvm="http://prismlibrary.com/"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
 
@@ -21,6 +23,12 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="30" Text="{Binding FloorNumber,StringFormat={}Current floor: {0}}"/>
             <StackPanel Grid.Row="1" Grid.Column="0">
+                <TextBlock Margin="20,50,25,0" FontSize="16" Text="Existing house layouts: "/>
+                <ComboBox 
+                    Margin="20,7,25,0"
+                    ItemsSource="{Binding Houses}"
+                    SelectedItem="{Binding SelectedHouse}"
+                    />
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="New house layout"/>
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="Load existing house layout"/>
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" CommandParameter="Up" Content="Go up a floor" Command="{Binding ChangeFloorCommand}"/>

@@ -22,6 +22,9 @@ namespace HousePlanner
             ApplicationThemeHelper.ApplicationThemeName = Theme.VS2019DarkName;
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             var rm = Container.Resolve<IRegionManager>();
+            Container.Resolve<AddFurnitureView>();
+            Container.Resolve<AddRoomView>();
+            Container.Resolve<AddHouseView>();
             Container.Resolve<SignUpView>();
             var loginView = Container.Resolve<LoginView>();
             if (!(bool)loginView.ShowDialog())
@@ -32,9 +35,9 @@ namespace HousePlanner
             rm.RegisterViewWithRegion<MainWindowView>("MainWindowViewRegion");
 
             var shell = Container.Resolve<Shell>();
-            
+
             Application.Current.MainWindow = shell;
-            
+
             return shell;
         }
 

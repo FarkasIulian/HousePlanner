@@ -19,17 +19,18 @@ using System.Windows.Shapes;
 namespace HousePlanner.Views
 {
     /// <summary>
-    /// Interaction logic for SignUpView.xaml
+    /// Interaction logic for AddRoomView.xaml
     /// </summary>
-    public partial class SignUpView : ThemedWindow
+    public partial class AddRoomView : ThemedWindow
     {
         private IEventAggregator _eventAggregator;
 
-        public SignUpView(IEventAggregator ea)
+        public AddRoomView(IEventAggregator ea)
         {
             InitializeComponent();
             _eventAggregator = ea;
-            _eventAggregator.GetEvent<OnOpenSignUpWindow>().Subscribe(() => this.ShowDialog());
+            _eventAggregator.GetEvent<OnOpenAddRoomWindow>().Subscribe((id) => this.ShowDialog());
+            _eventAggregator.GetEvent<OnInsertedRoom>().Subscribe(payload => CloseAndReset());
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -40,8 +41,14 @@ namespace HousePlanner.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            CloseAndReset();
+        }
+
+        private void CloseAndReset()
+        {
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Publish();
             this.Close();
         }
+
     }
 }

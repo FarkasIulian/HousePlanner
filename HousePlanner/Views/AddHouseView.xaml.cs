@@ -19,17 +19,17 @@ using System.Windows.Shapes;
 namespace HousePlanner.Views
 {
     /// <summary>
-    /// Interaction logic for SignUpView.xaml
+    /// Interaction logic for AddHouseView.xaml
     /// </summary>
-    public partial class SignUpView : ThemedWindow
+    public partial class AddHouseView : ThemedWindow
     {
         private IEventAggregator _eventAggregator;
 
-        public SignUpView(IEventAggregator ea)
+        public AddHouseView(IEventAggregator ea)
         {
             InitializeComponent();
             _eventAggregator = ea;
-            _eventAggregator.GetEvent<OnOpenSignUpWindow>().Subscribe(() => this.ShowDialog());
+            _eventAggregator.GetEvent<OnOpenAddHouseWindow>().Subscribe(() => this.ShowDialog());
         }
 
         protected override void OnClosing(CancelEventArgs e)

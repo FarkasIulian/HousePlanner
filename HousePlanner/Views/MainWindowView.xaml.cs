@@ -1,17 +1,10 @@
 ﻿using DevExpress.Xpf.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HousePlannerCore.Events;
+using HousePlannerCore.Models;
+using Prism.Events;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HousePlanner.Views
 {
@@ -22,32 +15,42 @@ namespace HousePlanner.Views
     {
 
         private Point clickedPoint;
+        private IEventAggregator _eventAggregator;
 
-        public MainWindowView()
+        public MainWindowView(IEventAggregator ea)
         {
             InitializeComponent();
+            _eventAggregator = ea;
+            ea.GetEvent<OnInsertedRoom>().Subscribe(AddRoomToCanvas);
+
         }
+
+        private void AddRoomToCanvas(Room room)
+        {
+            Button newRoom = new Button()
+            {
+                Content = room.Name,
+                FontSize = 16,
+                Height = room.Width,
+                Width = room.Length
+            };
+            newRoom.Click += X_Click;
+            Canvas.SetLeft(newRoom, room.PositionInHouse.X);
+            Canvas.SetTop(newRoom, room.PositionInHouse.Y);
+            
+            if (!IsHittingExistingRoom(new Point(room.PositionInHouse.X, room.PositionInHouse.Y), newRoom))
+                RoomsGrid.Children.Add(newRoom);
+
+        }
+
 
         private void RoomsGrid_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             clickedPoint = e.GetPosition(RoomsGrid);
-            var ceva = e.GetPosition(RoomsGrid);
-            Button x = new Button()
-            {
-                Content = "Testing",
-                FontSize = 16,
-                Height = 100,
-                Width = 200
-            };
-           
-            x.Click += X_Click;
-            Canvas.SetLeft(x, ceva.X);
-            Canvas.SetTop(x, ceva.Y);
+            
+            var point = new System.Drawing.Point((int)clickedPoint.X, (int)clickedPoint.Y); // convert point to System.Drawing.Point
 
-           
-            if(!IsHittingExistingRoom(ceva,x))
-                RoomsGrid.Children.Add(x);
-
+            _eventAggregator.GetEvent<OnRightClickSendPoint>().Publish(point);
         }
 
         private void X_Click(object sender, RoutedEventArgs e)
@@ -55,6 +58,7 @@ namespace HousePlanner.Views
             var button = sender as Button;
             var ceva = button.GetPosition(RoomsGrid);
             MessageBox.Show(ceva.X + " " + ceva.Y);
+
 
         }
 

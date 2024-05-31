@@ -2,13 +2,12 @@
 
 using System.Collections.Generic;
 
-namespace HousePlanner.Models
+namespace HousePlannerCore.Models
 {
     public  class House
     {
         public long Id { get; set; } = 0;
-
-        public List<Room> Rooms { get; set; }
+        public string Name { get; set; }
 
         public int NumberOfFloors { get; set; }
 

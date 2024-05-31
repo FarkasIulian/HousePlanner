@@ -1,9 +1,7 @@
 ﻿using DBManager;
 using DevExpress.Mvvm;
-using HousePlanner.Models;
-using HousePlanner.Views;
-using HousePlannerCore;
 using HousePlannerCore.Events;
+using HousePlannerCore.Models;
 using Prism.Events;
 using Prism.Ioc;
 using System;
@@ -49,6 +47,8 @@ namespace HousePlanner.ViewModels
 
         private DbManagerService dbManager;
         private IEventAggregator eventAggregator;
+        private bool  isExecuting = false;
+
 
         public LoginViewModel(IEventAggregator ea, IContainerProvider provider)
         {            
@@ -73,16 +73,26 @@ namespace HousePlanner.ViewModels
 
         private async void LoginLogic()
         {
-            if (!ValidCredentials())
-                return;
-            var user = (await dbManager.GetFiltered<User>(nameof(User.Email), UsernameTextBox.Trim())).FirstOrDefault();
-            if (user == null)
+            try
             {
-                SetErrorText("No user found! Please sign up!");
-                return;
+                if (!isExecuting)
+                {
+                    isExecuting = true;
+                    if (!ValidCredentials())
+                        return;
+                    var user = (await dbManager.GetFiltered<User>(nameof(User.Email), UsernameTextBox.Trim())).FirstOrDefault();
+                    if (user == null)
+                    {
+                        SetErrorText("No user found! Please sign up!");
+                        return;
+                    }
+                    HandleLogin(user);
+                }
             }
-            HandleLogin(user);
-            
+            finally
+            {
+                isExecuting = false;
+            }
         }
 
 
@@ -110,7 +120,7 @@ namespace HousePlanner.ViewModels
             if (PasswordTextBox.Equals(user.Password))
             {
                 MessageBox.Show("Te-ai logat bine","Succesful Login",MessageBoxButton.OK,MessageBoxImage.Information);
-                eventAggregator.GetEvent<OnLoginClosed>().Publish();
+                eventAggregator.GetEvent<OnLoginClosed>().Publish(user);
             }
             else
                 SetErrorText("Password is incorrect!");

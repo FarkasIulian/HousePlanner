@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
 
-namespace HousePlanner.Models
+namespace HousePlannerCore.Models
 {
     public class Furniture
     {
         public long Id { get; set; } = 0;
+        public long RoomId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public float Width { get; set; }

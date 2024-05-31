@@ -28,7 +28,7 @@ namespace HousePlanner.Views
         {
             InitializeComponent();
             ea.GetEvent<OnLoginClosed>().Subscribe(
-                () =>
+                (payload) =>
                 {
                     this.DialogResult = true;
                     this.Close();

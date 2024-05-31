@@ -1,17 +1,17 @@
-﻿<dx:ThemedWindow x:Class="HousePlanner.Views.SignUpView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-xmlns:local="clr-namespace:HousePlanner.Views"
-xmlns:mvvm="http://prismlibrary.com/"
-mc:Ignorable="d" 
-Height="450" Width="325"
-ResizeMode="NoResize"
-WindowStartupLocation="CenterScreen"
-mvvm:ViewModelLocator.AutoWireViewModel="True"
-             Title="SignUp">
+﻿<dx:ThemedWindow x:Class="HousePlanner.Views.AddRoomView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:HousePlanner.Views"
+        xmlns:mvvm="http://prismlibrary.com/"
+        mc:Ignorable="d" 
+        Height="450" Width="325"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        mvvm:ViewModelLocator.AutoWireViewModel="True"
+        Title="AddRoomView" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -29,75 +29,50 @@ mvvm:ViewModelLocator.AutoWireViewModel="True"
             Grid.Column="0"
             Grid.ColumnSpan="3"
             Margin="0,0,0,10"
-            Text="Sign up!"
+            Text="Add new room!"
             FontSize="45"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
                    />
-        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+        <StackPanel VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Orientation="Vertical">
             <TextBlock
-                Text="Email: "
+                Text="Name: "
                 FontSize="16"
                 HorizontalAlignment="Center"
                 Margin="5,10,0,0"
                 />
 
+            
             <TextBlock
-    Text="Password: "
-    FontSize="16"
-    HorizontalAlignment="Center"
-    Margin="5,17,0,5"
-    />
-            <TextBlock
-Text="Repeat password: "
+Text="Width: "
 FontSize="16"
 HorizontalAlignment="Center"
 Margin="5,16,0,5"
 />
             <TextBlock
-Text="First name: "
+Text="Length: "
 FontSize="16"
 HorizontalAlignment="Center"
 Margin="5,15,0,5"
 />
 
-            <TextBlock
-Text="Last name: "
-FontSize="16"
-HorizontalAlignment="Center"
-Margin="5,15,0,5"
-/>
-            
-
-
-
-
-
-
+           
 
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            
+        <StackPanel VerticalAlignment="Center" Grid.Row="1" Grid.Column="1">
+
             <TextBox 
                 Margin="5,10,0,0"
-    Text="{Binding EmailTextBox}"
+    Text="{Binding NameTextBox}"
     HorizontalAlignment="Center"
     Width="150"
     />
             <TextBox Margin="5,15,0,5"
-Text="{Binding PasswordTextBox}"
+Text="{Binding WidthTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
             <TextBox Margin="5,15,0,5"
-Text="{Binding RepeatPasswordTextBox}"
-HorizontalAlignment="Center"
-Width="150"/>
-            <TextBox Margin="5,15,0,5"
-Text="{Binding FirstNameTextBox}"
-HorizontalAlignment="Center"
-Width="150"/>
-            <TextBox Margin="5,15,0,5"
-Text="{Binding LastNameTextBox}"
+Text="{Binding LengthTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
 
@@ -110,7 +85,7 @@ Width="150"/>
     Text="Errors: "
     />
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Grid.Column="1">
-        <TextBlock
+            <TextBlock
             
             FontSize="16"
             Text="{Binding Errors}"
@@ -119,8 +94,8 @@ Width="150"/>
         </ScrollViewer>
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" >
             <Button
-                Content="Sign Up!"
-                Command="{Binding SignupCommand}"
+                Content="Add room!"
+                Command="{Binding AddRoomCommand}"
                 Margin="20"
                 />
             <Button
@@ -128,10 +103,9 @@ Width="150"/>
                 Click="Button_Click"
     Margin="20"
     />
-            
-            
+
+
 
         </StackPanel>
     </Grid>
 </dx:ThemedWindow>
-

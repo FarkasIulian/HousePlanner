@@ -9,13 +9,12 @@ using System.Windows;
 using DevExpress.Mvvm;
 using System.Windows.Input;
 using Prism.Ioc;
-using HousePlanner.Models;
+using HousePlannerCore.Models;
 
 namespace HousePlanner.ViewModels
 {
     public class SignUpViewModel : BindableBase
     {
-        private IEventAggregator _eventAggregator;
 
         public string EmailTextBox
         {
@@ -51,16 +50,15 @@ namespace HousePlanner.ViewModels
 
         public ICommand SignupCommand => new DelegateCommand(SignUp);
 
-
         private DBManager.DbManagerService _dbManager;
-        
+        private IEventAggregator _eventAggregator;
 
-        public SignUpViewModel(IEventAggregator ea,IContainerProvider containerProvider) 
+
+        public SignUpViewModel(IEventAggregator ea, IContainerProvider containerProvider)
         {
             _dbManager = containerProvider.Resolve<DBManager.DbManagerService>();
             _eventAggregator = ea;
-            _eventAggregator.GetEvent<OnCloseSignUpResetTextBoxes>().Subscribe(() => MessageBox.Show("ceva"));
-
+            _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
 
         }
 
@@ -74,11 +72,21 @@ namespace HousePlanner.ViewModels
                 LastName = LastNameTextBox,
 
             };
-            if(await _dbManager.Insert(user) != -1)
+            if (await _dbManager.Insert(user) != -1)
             {
                 MessageBox.Show("Inserted");
+                ResetValues();
             }
         }
 
+        private void ResetValues()
+        {
+            EmailTextBox = "";
+            PasswordTextBox = "";
+            RepeatPasswordTextBox = "";
+            FirstNameTextBox = "";
+            LastNameTextBox = "";
+            Errors = "";
+        }
     }
 }

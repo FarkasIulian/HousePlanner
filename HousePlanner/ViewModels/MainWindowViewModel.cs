@@ -1,5 +1,9 @@
-﻿using DevExpress.Mvvm;
+﻿using DBManager;
+using DevExpress.Mvvm;
+using HousePlannerCore.Events;
+using HousePlannerCore.Models;
 using Prism.Events;
+using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +21,12 @@ namespace HousePlanner.ViewModels
 
         public int FloorNumber
         {
-            get 
+            get
             {
                 return floorNumber;
             }
             set
-            { 
+            {
                 floorNumber = value;
                 RaisePropertiesChanged(nameof(FloorNumber));
             }
@@ -32,24 +36,52 @@ namespace HousePlanner.ViewModels
         public System.Windows.Input.ICommand AddNewRoomCommand => new DelegateCommand(AddRoom);
 
 
+        private DBManager.DbManagerService dbManager;
         private IEventAggregator eventAggregator;
-        
+        private User user;
+        private List<Room> roomsInHouse;
 
-        public MainWindowViewModel(IEventAggregator ea)
+
+        public MainWindowViewModel(IEventAggregator ea, IContainerProvider container)
         {
             FloorNumber = 0;
             eventAggregator = ea;
+            dbManager = container.Resolve<DbManagerService>();
+            //    eventAggregator.GetEvent<OnLoginClosed>().Subscribe(
+            //         async (payload) =>
+            //         {
+            //             user = payload;                    
+            //         });
+            //
+            LoadAllRoomsFromHouse();
         }
 
+
+        private async Task LoadAllRoomsFromHouse()
+        {
+            roomsInHouse = await dbManager.GetAll<Room>();
+            LoadRooms();
+        }
+        private void LoadRooms()
+        {
+            var filteredRooms = roomsInHouse.Where(r => r.Floor == FloorNumber);
+            foreach (Room room in filteredRooms)
+            {
+                eventAggregator.GetEvent<OnInsertedRoom>().Publish(room);
+            }
+
+        }
         private void ChangeFloor(string floorAction)
         {
             if (floorAction == "Up")
                 FloorNumber++;
-            else FloorNumber--;
+            else if (FloorNumber > 0)
+                FloorNumber--;
+            LoadRooms();
         }
         private void AddRoom()
         {
-            MessageBox.Show("Ceva");
+            eventAggregator.GetEvent<OnOpenAddRoomWindow>().Publish((0,FloorNumber));
         }
     }
 }
