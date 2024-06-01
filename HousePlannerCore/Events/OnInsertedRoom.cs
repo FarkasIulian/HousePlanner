@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HousePlannerCore.Events
 {
-    public class OnInsertedRoom:PubSubEvent<Room>
+    public class OnTryInsertingRoom:PubSubEvent<(Room,bool)>
     {
     }
 }

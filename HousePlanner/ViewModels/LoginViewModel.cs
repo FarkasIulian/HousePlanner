@@ -48,6 +48,7 @@ namespace HousePlanner.ViewModels
         private DbManagerService dbManager;
         private IEventAggregator eventAggregator;
         private bool  isExecuting = false;
+        private User? user;
 
 
         public LoginViewModel(IEventAggregator ea, IContainerProvider provider)
@@ -55,6 +56,7 @@ namespace HousePlanner.ViewModels
             dbManager = provider.Resolve<DbManagerService>();
             eventAggregator = ea;
             IsErrorTextVisible = Visibility.Hidden;
+            eventAggregator.GetEvent<OnRequestUserEmail>().Subscribe(() => eventAggregator.GetEvent<OnSendUserInformation>().Publish(user));
         }
 
 
@@ -80,7 +82,7 @@ namespace HousePlanner.ViewModels
                     isExecuting = true;
                     if (!ValidCredentials())
                         return;
-                    var user = (await dbManager.GetFiltered<User>(nameof(User.Email), UsernameTextBox.Trim())).FirstOrDefault();
+                    user = (await dbManager.GetFiltered<User>(nameof(User.Email), UsernameTextBox.Trim())).FirstOrDefault();
                     if (user == null)
                     {
                         SetErrorText("No user found! Please sign up!");
@@ -121,6 +123,7 @@ namespace HousePlanner.ViewModels
             {
                 MessageBox.Show("Te-ai logat bine","Succesful Login",MessageBoxButton.OK,MessageBoxImage.Information);
                 eventAggregator.GetEvent<OnLoginClosed>().Publish(user);
+                
             }
             else
                 SetErrorText("Password is incorrect!");

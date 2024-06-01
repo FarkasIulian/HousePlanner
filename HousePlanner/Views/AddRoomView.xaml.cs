@@ -29,8 +29,8 @@ namespace HousePlanner.Views
         {
             InitializeComponent();
             _eventAggregator = ea;
-            _eventAggregator.GetEvent<OnOpenAddRoomWindow>().Subscribe((id) => this.ShowDialog());
-            _eventAggregator.GetEvent<OnInsertedRoom>().Subscribe(payload => CloseAndReset());
+            _eventAggregator.GetEvent<OnOpenAddRoomWindow>().Subscribe(() => this.ShowDialog());
+            _eventAggregator.GetEvent<OnTryInsertingRoom>().Subscribe(payload => CloseAndReset());
         }
 
         protected override void OnClosing(CancelEventArgs e)

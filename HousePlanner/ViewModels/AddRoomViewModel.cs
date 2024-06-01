@@ -32,7 +32,7 @@ namespace HousePlanner.ViewModels
             get => GetValue<string>();
             set => SetValue(value);
         }
-      
+
         public string Errors
         {
             get => GetValue<string>();
@@ -52,14 +52,21 @@ namespace HousePlanner.ViewModels
         {
             _dbManager = container.Resolve<DBManager.DbManagerService>();
             _eventAggregator = ea;
-            
+
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
-            _eventAggregator.GetEvent<OnOpenAddRoomWindow>().Subscribe(payload =>
+            _eventAggregator.GetEvent<OnSendHouseData>().Subscribe(payload =>
             {
                 houseId = payload.Item1;
                 currentFloor = payload.Item2;
-            });
-            _eventAggregator.GetEvent<OnRightClickSendPoint>().Subscribe(point => roomPosition = point);
+            }, true);
+            _eventAggregator.GetEvent<OnRightClickSendPoint>().Subscribe(
+                point => roomPosition = point);
+            //_eventAggregator.GetEvent<OnRoomValidForInsertion>().Subscribe(
+            //    async (room) =>
+            //    {
+            //        await _dbManager.Insert(room);
+
+            //    }, true);
 
         }
 
@@ -71,7 +78,7 @@ namespace HousePlanner.ViewModels
             Errors = "";
         }
 
-        private async void AddRoom()
+        private void AddRoom()
         {
             var room = new Room()
             {
@@ -82,12 +89,8 @@ namespace HousePlanner.ViewModels
                 Length = int.Parse(LengthTextBox),
                 PositionInHouse = roomPosition
             };
+            _eventAggregator.GetEvent<OnTryInsertingRoom>().Publish((room,true));
 
-            if(await _dbManager.Insert(room) != -1)
-            {
-                MessageBox.Show("Inserted room");
-                _eventAggregator.GetEvent<OnInsertedRoom>().Publish(room);
-            }
 
         }
 

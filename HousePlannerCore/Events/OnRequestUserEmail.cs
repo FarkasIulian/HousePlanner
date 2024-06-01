@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HousePlannerCore.Events
 {
-    public class OnOpenAddRoomWindow : PubSubEvent
+    public class OnRequestUserEmail : PubSubEvent
     {
     }
 }

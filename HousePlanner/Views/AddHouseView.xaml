@@ -30,7 +30,7 @@
             Grid.ColumnSpan="3"
             Margin="0,0,0,10"
             Text="Add new house!"
-            FontSize="45"
+            FontSize="44"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
                    />
@@ -74,11 +74,11 @@ Margin="5,16,0,5"
     Width="150"
     />
             <TextBox Margin="5,15,0,5"
-Text="{Binding PasswordTextBox}"
+Text="{Binding LayoutNameTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
             <TextBox Margin="5,15,0,5"
-Text="{Binding RepeatPasswordTextBox}"
+Text="{Binding NumberOfFloorsTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
             
@@ -100,8 +100,8 @@ Width="150"/>
         </ScrollViewer>
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" >
             <Button
-                Content="Sign Up!"
-                Command="{Binding SignupCommand}"
+                Content="Add house!"
+                Command="{Binding AddHouseCommand}"
                 Margin="20"
                 />
             <Button

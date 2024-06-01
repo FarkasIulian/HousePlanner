@@ -93,18 +93,13 @@ namespace DBManager
             }
         }
 
-        private string EnsureCorrectColumnFormat(string input)
-        {
-            var correct = input.ToLower().Trim();
-            return char.ToUpper(correct[0]) + correct.Substring(1);
-        }
 
         public async Task<List<T>> GetFiltered<T>(string columnName,string value)
         {
             var operation = "GetFiltered";
             var type = typeof(T);
             var dexOperation = operation + type.Name;
-            columnName = EnsureCorrectColumnFormat(columnName);
+            //columnName = EnsureCorrectColumnFormat(columnName);
             using (HttpClient client = new HttpClient())
             {
                 var tot = await client.GetAsync(queryDictionary[dexOperation] + $"&columnName={columnName}&columnValue={value}");

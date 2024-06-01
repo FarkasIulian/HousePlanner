@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using HousePlannerCore.Models;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HousePlannerCore.Events
 {
-    public class OnOpenAddRoomWindow : PubSubEvent
+    public class OnSendUserInformation : PubSubEvent<User>
     {
     }
 }
