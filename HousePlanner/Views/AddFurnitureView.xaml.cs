@@ -29,7 +29,8 @@ namespace HousePlanner.Views
         {
             InitializeComponent();
             _eventAggregator = ea;
-            _eventAggregator.GetEvent<OnOpenAddFurnitureWindow>().Subscribe(() => this.ShowDialog());
+            _eventAggregator.GetEvent<OnOpenAddFurnitureWindow>().Subscribe((room) => this.Show());
+            _eventAggregator.GetEvent<OnTryInsertingFurniture>().Subscribe(furniture => CloseAndReset());
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -39,6 +40,11 @@ namespace HousePlanner.Views
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            CloseAndReset();
+        }
+
+        private void CloseAndReset()
         {
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Publish();
             this.Close();

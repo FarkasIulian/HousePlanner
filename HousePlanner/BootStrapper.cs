@@ -29,6 +29,7 @@ namespace HousePlanner
             Container.Resolve<AddRoomView>();
             Container.Resolve<AddHouseView>();
             Container.Resolve<SignUpView>();
+            Container.Resolve<FurnitureView>();
             
             var loginView = Container.Resolve<LoginView>();
             
@@ -39,6 +40,7 @@ namespace HousePlanner
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             rm.RegisterViewWithRegion<MainWindowView>("MainWindowViewRegion");
+            
 
             var shell = Container.Resolve<Shell>();
 

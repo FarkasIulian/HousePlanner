@@ -28,44 +28,39 @@
             Grid.Column="0"
             Grid.ColumnSpan="3"
             Margin="0,0,0,10"
-            Text="Sign up!"
+            Text="Add Furniture!"
             FontSize="45"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
                    />
-        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+        <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Orientation="Vertical">
             <TextBlock
-                Text="Email: "
+                Text="Name: "
                 FontSize="16"
                 HorizontalAlignment="Center"
                 Margin="5,10,0,0"
                 />
 
             <TextBlock
-    Text="Password: "
+    Text="Width: "
     FontSize="16"
     HorizontalAlignment="Center"
     Margin="5,17,0,5"
     />
             <TextBlock
-Text="Repeat password: "
+Text="Length: "
 FontSize="16"
 HorizontalAlignment="Center"
 Margin="5,16,0,5"
 />
             <TextBlock
-Text="First name: "
+Text="Picture: "
 FontSize="16"
 HorizontalAlignment="Center"
 Margin="5,15,0,5"
 />
 
-            <TextBlock
-Text="Last name: "
-FontSize="16"
-HorizontalAlignment="Center"
-Margin="5,15,0,5"
-/>
+            
 
 
 
@@ -75,32 +70,29 @@ Margin="5,15,0,5"
 
 
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1">
+        <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1">
 
             <TextBox 
                 Margin="5,10,0,0"
-    Text="{Binding EmailTextBox}"
+    Text="{Binding NameTextBox}"
     HorizontalAlignment="Center"
     Width="150"
     />
             <TextBox Margin="5,15,0,5"
-Text="{Binding PasswordTextBox}"
+Text="{Binding WidthTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
             <TextBox Margin="5,15,0,5"
-Text="{Binding RepeatPasswordTextBox}"
+Text="{Binding LengthTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
             <TextBox Margin="5,15,0,5"
 Text="{Binding FirstNameTextBox}"
 HorizontalAlignment="Center"
-Width="150"/>
-            <TextBox Margin="5,15,0,5"
-Text="{Binding LastNameTextBox}"
-HorizontalAlignment="Center"
-Width="150"/>
-
+Width="150">
+            </TextBox>
         </StackPanel>
+            <Button Grid.Row="1" Content="..." Command="{Binding SelectPictureCommand}" Height="20" Width="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="3" Margin="10,0,10,6"/>
         <TextBlock
              Grid.Row="2" Grid.Column="0"
             VerticalAlignment="Center"
@@ -118,8 +110,8 @@ Width="150"/>
         </ScrollViewer>
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" >
             <Button
-                Content="Sign Up!"
-                Command="{Binding SignupCommand}"
+                Content="Add furniture!"
+                Command="{Binding AddFurnitureCommand}"
                 Margin="20"
                 />
             <Button

@@ -29,7 +29,16 @@
                           Name="HouseComboBox"
                           SelectedIndex="0"
                     ItemsSource="{Binding Houses}"
-                    SelectedItem="{Binding SelectedHouse}">
+                    SelectedItem="{Binding SelectedHouse}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="False">
+                                <TextBlock Text="{Binding Id}"/>
+                                <TextBlock Text=" - "/>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding HouseSelectionChanged}" CommandParameter="{Binding ElementName=HouseComboBox, Path=SelectedItem}"/>
@@ -40,41 +49,12 @@
                 </ComboBox>
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="New house layout" 
                         Command="{Binding AddNewHouseCommand}"/>
-                    <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="Load existing house layout"/>
-                    <Button Margin="20,50,25,0" Height="100" FontSize="16" CommandParameter="Up" Content="Go up a floor" Command="{Binding ChangeFloorCommand}"/>
-                    <Button Margin="20,50,25,0" Height="100" FontSize="16" CommandParameter="Down" Content="Go down a floor" Command="{Binding ChangeFloorCommand}"/>
+                <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="Load existing house layout"/>
+                <Button Margin="20,50,25,0" Height="100" FontSize="16" CommandParameter="Up" Content="Go up a floor" Command="{Binding ChangeFloorCommand}"/>
+                <Button Margin="20,50,25,0" Height="100" FontSize="16" CommandParameter="Down" Content="Go down a floor" Command="{Binding ChangeFloorCommand}"/>
             </StackPanel>
-            <Canvas x:Name="RoomsGrid" Width="1350" Height="900" Background="LightBlue" Grid.Row="1" Grid.Column="1" PreviewMouseRightButtonDown="RoomsGrid_PreviewMouseRightButtonDown">
-                <Canvas.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Add new Room" Command="{Binding AddNewRoomCommand}" />
-                        <MenuItem Header="Modify room" Visibility="{Binding ModifyRoomOptions}">
-
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Name: "/>
-                                <TextBox Margin="10,0,0,0" Text="{Binding SelectedRoomName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Width: "/>
-                                <TextBox Margin="10,0,0,0" Text="{Binding SelectedRoomWidth}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Length: "/>
-                                <TextBox Margin="10,0,0,0" Text="{Binding SelectedRoomLength}"/>
-                            </StackPanel>
-                            <Button Command="{Binding ModifyRoomCommand}" Content="Save" />
-
-                        </MenuItem>
-                        <MenuItem Header="Delete room" Command="{Binding DeleteRoomCommand}" Visibility="{Binding ModifyRoomOptions}"/>
-                    </ContextMenu>
-                </Canvas.ContextMenu>
-
-            </Canvas>
-
-            <dock:DockLayoutManager>
-                <dock:LayoutGroup>
-                </dock:LayoutGroup>
-            </dock:DockLayoutManager>
+            <ContentControl Content="{Binding RoomsView}" Grid.Row="1" Grid.Column="1"/>
+            
 
         </Grid>
     </ScrollViewer>

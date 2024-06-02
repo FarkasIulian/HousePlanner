@@ -2,6 +2,8 @@
 using System.Text.Json.Nodes;
 using System.Text;
 using Prism.Events;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace DBManager
 {
@@ -34,9 +36,18 @@ namespace DBManager
             { "UpdateRoom","https://initdb.azurewebsites.net/api/updateRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" }
         };
 
+        private static string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=testingfirstazuredemo;AccountKey=O3/UjkVlO63CK8HnuuCTp+TldwPjexDUhwYzXYdEEQfDBjKuc0cLginUXVhaMbiO0SLxupMkMgx6+ASt5lgfmg==;EndpointSuffix=core.windows.net";
+        private static CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
+        private static CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+        private static CloudBlobContainer container = blobClient.GetContainerReference("images");
         public DbManagerService(IEventAggregator ea)
         {
         }
+
+
+        
+
+
 
         public async Task<int> Insert<T>(T model)
         {

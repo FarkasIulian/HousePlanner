@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using HousePlannerCore.Models;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HousePlannerCore.Events
 {
-    public class OnRoomRightClicked : PubSubEvent<int>
+    public class OnChangedRoomPosition : PubSubEvent<(long,double,double)>
     {
     }
 }

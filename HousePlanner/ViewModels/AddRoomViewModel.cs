@@ -14,45 +14,17 @@ using System.Windows.Input;
 
 namespace HousePlanner.ViewModels
 {
-    public class AddRoomViewModel : BindableBase
+    public class AddRoomViewModel : AddRoomAndFurnitureBase
     {
-        public string NameTextBox
-        {
-            get => GetValue<string>();
-            set => SetValue(value);
-        }
-
-        public string WidthTextBox
-        {
-            get => GetValue<string>();
-            set => SetValue(value);
-        }
-        public string LengthTextBox
-        {
-            get => GetValue<string>();
-            set => SetValue(value);
-        }
-
-        public string Errors
-        {
-            get => GetValue<string>();
-            set => SetValue(value);
-        }
+        
 
         public ICommand AddRoomCommand => new DelegateCommand(AddRoom);
 
-        private long houseId;
-        private DbManagerService _dbManager;
-        private IEventAggregator _eventAggregator;
-        private System.Drawing.Point roomPosition;
+        private long houseId;       
         private int currentFloor;
 
-
-        public AddRoomViewModel(IEventAggregator ea, IContainerProvider container)
+        public AddRoomViewModel(IEventAggregator ea, IContainerProvider container) : base(ea,container)
         {
-            _dbManager = container.Resolve<DBManager.DbManagerService>();
-            _eventAggregator = ea;
-
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
             _eventAggregator.GetEvent<OnSendHouseData>().Subscribe(payload =>
             {
@@ -60,22 +32,7 @@ namespace HousePlanner.ViewModels
                 currentFloor = payload.Item2;
             }, true);
             _eventAggregator.GetEvent<OnRightClickSendPoint>().Subscribe(
-                point => roomPosition = point);
-            //_eventAggregator.GetEvent<OnRoomValidForInsertion>().Subscribe(
-            //    async (room) =>
-            //    {
-            //        await _dbManager.Insert(room);
-
-            //    }, true);
-
-        }
-
-        private void ResetValues()
-        {
-            NameTextBox = "";
-            WidthTextBox = "";
-            LengthTextBox = "";
-            Errors = "";
+                point => position = point);
         }
 
         private void AddRoom()
@@ -87,9 +44,9 @@ namespace HousePlanner.ViewModels
                 Floor = currentFloor,
                 Width = int.Parse(WidthTextBox),
                 Length = int.Parse(LengthTextBox),
-                PositionInHouse = roomPosition
+                PositionInHouse = position
             };
-            _eventAggregator.GetEvent<OnTryInsertingRoom>().Publish((room,true));
+            _eventAggregator.GetEvent<OnTryInsertingRoom>().Publish((room, true));
 
 
         }

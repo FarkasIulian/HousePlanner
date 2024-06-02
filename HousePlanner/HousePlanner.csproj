@@ -22,4 +22,16 @@
     <ProjectReference Include="..\HousePlannerCore\HousePlannerCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\FurnitureView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\FurnitureView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

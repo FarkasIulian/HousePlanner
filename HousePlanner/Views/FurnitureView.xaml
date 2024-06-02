@@ -1,0 +1,61 @@
+﻿<dx:ThemedWindow x:Class="HousePlanner.Views.FurnitureView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HousePlanner.Views"
+        xmlns:mvvm="http://prismlibrary.com/"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mvvm:ViewModelLocator.AutoWireViewModel="True"
+        mc:Ignorable="d">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Canvas x:Name="FurnitureGrid" DragOver="FurnitureGrid_DragOver" AllowDrop="True" Drop="FurnitureGrid_Drop" Width="1750" Height="900" Background="LightBlue" Grid.Row="1" Grid.Column="1" PreviewMouseRightButtonDown="FurnitureGrid_PreviewMouseRightButtonDown">
+                <Canvas.ContextMenu>
+                    <ContextMenu>
+
+                        <MenuItem Header="Add new Furniture" Command="{Binding AddNewFurnitureCommand}" />
+                        <MenuItem Header="Open Furniture" Command="{Binding OpenFurnitureCommand}" Visibility="{Binding ModifyFurnitureOptions}"/>
+                        <MenuItem Header="Modify Furniture" Visibility="{Binding ModifyFurnitureOptions}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Name: "/>
+                                <TextBox Margin="10,0,0,0" Text="{Binding SelectedFurnitureName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Width: "/>
+                                <TextBox Margin="10,0,0,0" Text="{Binding SelectedFurnitureWidth}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Length: "/>
+                                <TextBox Margin="10,0,0,0" Text="{Binding SelectedFurnitureLength}"/>
+                            </StackPanel>
+                            <Button Command="{Binding ModifyFurnitureCommand}" Content="Save" />
+
+                        </MenuItem>
+                        <MenuItem Header="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Visibility="{Binding ModifyFurnitureOptions}"/>
+                    </ContextMenu>
+                </Canvas.ContextMenu>
+
+            </Canvas>
+
+            <dock:DockLayoutManager>
+                <dock:LayoutGroup>
+                    
+                </dock:LayoutGroup>
+            </dock:DockLayoutManager>
+
+        </Grid>
+    </ScrollViewer>
+
+</dx:ThemedWindow>
