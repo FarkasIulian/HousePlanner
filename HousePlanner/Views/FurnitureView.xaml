@@ -26,7 +26,6 @@
                     <ContextMenu>
 
                         <MenuItem Header="Add new Furniture" Command="{Binding AddNewFurnitureCommand}" />
-                        <MenuItem Header="Open Furniture" Command="{Binding OpenFurnitureCommand}" Visibility="{Binding ModifyFurnitureOptions}"/>
                         <MenuItem Header="Modify Furniture" Visibility="{Binding ModifyFurnitureOptions}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Name: "/>

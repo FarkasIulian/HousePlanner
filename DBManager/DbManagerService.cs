@@ -4,6 +4,7 @@ using System.Text;
 using Prism.Events;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using System.IO;
 
 namespace DBManager
 {
@@ -45,8 +46,35 @@ namespace DBManager
         }
 
 
-        
 
+        public async Task SaveImageToBlob(string path)
+        {
+            var picture = Path.GetFileName(path);
+            await container.CreateIfNotExistsAsync();
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(picture);
+            using (var fileStream = File.OpenRead(path))
+            {
+                await blockBlob.UploadFromStreamAsync(fileStream);
+            }
+        }
+
+        public async Task DownloadPicture(string picture)
+        {
+            await container.CreateIfNotExistsAsync();
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(picture);
+            try
+            {
+                await blockBlob.DownloadToFileAsync(picture, FileMode.CreateNew);
+            }
+            catch (Exception) { }
+        }
+
+        public async Task DeleteFromBlob(string picture)
+        {
+            await container.CreateIfNotExistsAsync();
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(picture);
+            await blockBlob.DeleteIfExistsAsync();
+        }
 
 
         public async Task<int> Insert<T>(T model)
@@ -105,7 +133,7 @@ namespace DBManager
         }
 
 
-        public async Task<List<T>> GetFiltered<T>(string columnName,string value)
+        public async Task<List<T>> GetFiltered<T>(string columnName, string value)
         {
             var operation = "GetFiltered";
             var type = typeof(T);
@@ -180,7 +208,7 @@ namespace DBManager
                         return false;
                     }
                 }
-                
+
             }
             return false;
         }

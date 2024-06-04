@@ -47,9 +47,9 @@
 
 
                 </ComboBox>
-                <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="New house layout" 
+                <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="New House Layout" 
                         Command="{Binding AddNewHouseCommand}"/>
-                <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="Load existing house layout"/>
+                <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="Delete House Layout" Command="{Binding DeleteHouseCommand}"/>
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" CommandParameter="Up" Content="Go up a floor" Command="{Binding ChangeFloorCommand}"/>
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" CommandParameter="Down" Content="Go down a floor" Command="{Binding ChangeFloorCommand}"/>
             </StackPanel>

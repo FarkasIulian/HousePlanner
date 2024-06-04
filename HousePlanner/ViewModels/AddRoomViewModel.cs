@@ -16,14 +16,14 @@ namespace HousePlanner.ViewModels
 {
     public class AddRoomViewModel : AddRoomAndFurnitureBase
     {
-        
+
 
         public ICommand AddRoomCommand => new DelegateCommand(AddRoom);
 
-        private long houseId;       
+        private long houseId;
         private int currentFloor;
 
-        public AddRoomViewModel(IEventAggregator ea, IContainerProvider container) : base(ea,container)
+        public AddRoomViewModel(IEventAggregator ea, IContainerProvider container) : base(ea, container)
         {
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
             _eventAggregator.GetEvent<OnSendHouseData>().Subscribe(payload =>
@@ -37,17 +37,23 @@ namespace HousePlanner.ViewModels
 
         private void AddRoom()
         {
-            var room = new Room()
+            Errors = "";
+            CheckForErrors();
+            if (Errors == "")
             {
-                Name = NameTextBox,
-                HouseId = houseId,
-                Floor = currentFloor,
-                Width = int.Parse(WidthTextBox),
-                Length = int.Parse(LengthTextBox),
-                PositionInHouse = position
-            };
-            _eventAggregator.GetEvent<OnTryInsertingRoom>().Publish((room, true));
 
+                var room = new Room()
+                {
+                    Name = NameTextBox,
+                    HouseId = houseId,
+                    Floor = currentFloor,
+                    Width = int.Parse(WidthTextBox),
+                    Length = int.Parse(LengthTextBox),
+                    PositionInHouse = position
+                };
+                _eventAggregator.GetEvent<OnTryInsertingRoom>().Publish((room, true));
+
+            }
 
         }
 

@@ -7,6 +7,7 @@ using Prism.Ioc;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -24,7 +25,7 @@ namespace HousePlanner.Views
         private System.Windows.Point clickedPoint;
         private IEventAggregator _eventAggregator;
         private DbManagerService _dbManager;
-        private System.Windows.Controls.Image selectedFurniture;
+        private Image selectedFurniture = null;
         private System.Windows.Point initialDragPoint = new System.Windows.Point();
 
         public FurnitureView(IEventAggregator ea, IContainerProvider container)
@@ -37,17 +38,18 @@ namespace HousePlanner.Views
             ea.GetEvent<OnModifiedFurniture>().Subscribe(async (furniture) =>
             {
                 var index = FurnitureGrid.Children.IndexOf(selectedFurniture);
-                var newFurniture = new System.Windows.Controls.Image()
+                var newFurniture = new Image()
                 {
+                    Uid = $"_{furniture.Id}",
                     Name = furniture.Name,
                     Width = furniture.Length,
                     Height = furniture.Width
                 };
                 if (!IsHittingExistingFurniture(new System.Windows.Point(furniture.PositionInRoom.X, furniture.PositionInRoom.Y), newFurniture))
                 {
-                    ((Button)FurnitureGrid.Children[index]).Content = furniture.Name;
-                    ((Button)FurnitureGrid.Children[index]).Width = furniture.Length;
-                    ((Button)FurnitureGrid.Children[index]).Height = furniture.Width;
+                    ((Image)FurnitureGrid.Children[index]).Name = furniture.Name;
+                    ((Image)FurnitureGrid.Children[index]).Width = furniture.Length;
+                    ((Image)FurnitureGrid.Children[index]).Height = furniture.Width;
                     selectedFurniture = newFurniture;
                     await _dbManager.Update(furniture);
                 }
@@ -56,23 +58,24 @@ namespace HousePlanner.Views
             {
                 FurnitureGrid.Children.Remove(selectedFurniture);
             });
-            ea.GetEvent<OnOpenRoom>().Subscribe(room => this.ShowDialog());
+            ea.GetEvent<OnOpenRoom>().Subscribe(room => this.Show());
+
+
         }
 
         private async void AddRoomToCanvas(Furniture furniture, bool insertIntoDb = false)
         {
             Image newFurniture = new Image()
             {
+                Uid = $"_{furniture.Id}",
                 Name = furniture.Name,
-                Source = new BitmapImage(new Uri(furniture.Picture, UriKind.Relative)),
                 Height = furniture.Width,
                 Width = furniture.Length
             };
-            Button testingBtn = new Button()
-            {
-                Width = 200,
-                Height = 200
-            };
+            if (!File.Exists(furniture.Picture))
+                await _dbManager.DownloadPicture(furniture.Picture);
+
+            newFurniture.Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "\\" + furniture.Picture, UriKind.RelativeOrAbsolute));
             newFurniture.MouseMove += MoveMouse;
             newFurniture.PreviewMouseRightButtonDown += EnableModifyOptions;
             Canvas.SetLeft(newFurniture, furniture.PositionInRoom.X);
@@ -81,14 +84,14 @@ namespace HousePlanner.Views
             if (!IsHittingExistingFurniture(new System.Windows.Point(furniture.PositionInRoom.X, furniture.PositionInRoom.Y), newFurniture))
             {
                 FurnitureGrid.Children.Add(newFurniture);
-                FurnitureGrid.Children.Add(testingBtn);
                 if (insertIntoDb)
                 {
-                    _eventAggregator.GetEvent<OnFurnitureValidForInsertion>().Publish(furniture);
+                    furniture.Picture = Path.GetFileName(furniture.Picture);
                     var id = await _dbManager.Insert(furniture);
+                    _eventAggregator.GetEvent<OnFurnitureValidForInsertion>().Publish(furniture);
                     newFurniture.Uid = $"_{id}";
 
-                } 
+                }
             }
 
 
@@ -136,7 +139,7 @@ namespace HousePlanner.Views
 
 
 
-        private bool IsHittingExistingFurniture(System.Windows.Point clickedPoint, Image furnitureToAdd,bool showMessageBox = true)
+        private bool IsHittingExistingFurniture(System.Windows.Point clickedPoint, Image furnitureToAdd, bool showMessageBox = true)
         {
             Rect hitbox = new Rect(clickedPoint.X, clickedPoint.Y, furnitureToAdd.Width, furnitureToAdd.Height);
 
@@ -144,12 +147,12 @@ namespace HousePlanner.Views
             {
                 if (child.GetType() == furnitureToAdd.GetType())
                 {
-                    if (((Image)child).Name.Equals(furnitureToAdd.Name)) continue;
+                    if (((Image)child).Uid.Equals(furnitureToAdd.Uid)) continue;
                     var rect = new Rect(Canvas.GetLeft(child as Image), Canvas.GetTop(child as Image), ((Image)child).ActualWidth, ((Image)child).ActualHeight);
                     if (hitbox.IntersectsWith(rect))
                     {
                         if (showMessageBox)
-                            MessageBox.Show($"Collides with furniture","Furniture Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                            MessageBox.Show($"Collides with furniture", "Furniture Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         return true;
                     }
 
@@ -174,7 +177,7 @@ namespace HousePlanner.Views
             {
                 Canvas.SetLeft(selectedFurniture, dropLocation.X);
                 Canvas.SetTop(selectedFurniture, dropLocation.Y);
-                _eventAggregator.GetEvent<OnChangedFurniturePosition>().Publish((int.Parse(selectedFurniture.Name.Trim('_')),dropLocation.X,dropLocation.Y));
+                _eventAggregator.GetEvent<OnChangedFurniturePosition>().Publish((int.Parse(selectedFurniture.Uid.Trim('_')), dropLocation.X, dropLocation.Y));
             }
             else
             {

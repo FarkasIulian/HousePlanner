@@ -7,10 +7,13 @@ using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace HousePlanner.ViewModels
 {
@@ -36,28 +39,50 @@ namespace HousePlanner.ViewModels
             }, true);
             _eventAggregator.GetEvent<OnRightClickSendPoint>().Subscribe(
                 point => position = point);
+            ResetValues();
         }
 
-
-        private void AddFurniture()
+        protected override void CheckForErrors()
         {
-            var furniture = new Furniture()
+            base.CheckForErrors();
+            if (!File.Exists(ImageTextBlock))
+                Errors += "\nImage doesn't exist!";
+        }
+
+        protected override void ResetValues()
+        {
+            base.ResetValues();
+            ImageTextBlock = "";
+        }
+
+        private async void AddFurniture()
+        {
+            Errors = "";
+            CheckForErrors();
+            if (Errors == "")
             {
-                RoomId = roomId,
-                Name = NameTextBox,
-                Width = int.Parse(WidthTextBox),
-                Length = int.Parse(LengthTextBox),
-                PositionInRoom = position,
-                Picture = "C:\\Users\\Iulian\\Desktop\\masina.PNG"
-            };
+                var furniture = new Furniture()
+                {
+                    RoomId = roomId,
+                    Name = NameTextBox,
+                    Width = int.Parse(WidthTextBox),
+                    Length = int.Parse(LengthTextBox),
+                    PositionInRoom = position,
+                    Picture = System.IO.Path.GetFileName(ImageTextBlock).ToString()
+                };
 
-            _eventAggregator.GetEvent<OnTryInsertingFurniture>().Publish((furniture, true));
-
+                var folders = ImageTextBlock.Split("\\");
+                string path = System.IO.Path.Combine(folders);
+                await _dbManager.SaveImageToBlob(path);
+                _eventAggregator.GetEvent<OnTryInsertingFurniture>().Publish((furniture, true));
+            }
         }
 
         private void SelectPicture()
         {
-
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.ShowDialog();
+            ImageTextBlock = dialog.FileName;
         }
 
     }

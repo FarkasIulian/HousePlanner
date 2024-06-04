@@ -11,9 +11,9 @@
     <Grid>
         <Canvas x:Name="RoomsGrid" DragOver="RoomsGrid_DragOver" AllowDrop="True" Drop="RoomsGrid_Drop" Width="1350" Height="900" Background="LightBlue" PreviewMouseRightButtonDown="RoomsGrid_PreviewMouseRightButtonDown">
             <Canvas.ContextMenu>
-                <ContextMenu>
+                <ContextMenu Visibility="{Binding CanAddRoom}">
 
-                    <MenuItem Header="Add new Room" Command="{Binding AddNewRoomCommand}" />
+                    <MenuItem Header="Add new Room" Command="{Binding AddNewRoomCommand}"  />
                     <MenuItem Header="Open Room" Command="{Binding OpenRoomCommand}" Visibility="{Binding ModifyRoomOptions}"/>
                     <MenuItem Header="Modify room" Visibility="{Binding ModifyRoomOptions}">
                         <StackPanel Orientation="Horizontal">

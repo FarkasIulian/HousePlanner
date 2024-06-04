@@ -10,6 +10,8 @@ using DevExpress.Mvvm;
 using System.Windows.Input;
 using Prism.Ioc;
 using HousePlannerCore.Models;
+using System.Text.RegularExpressions;
+using System.Security;
 
 namespace HousePlanner.ViewModels
 {
@@ -20,7 +22,7 @@ namespace HousePlanner.ViewModels
         {
             get => GetValue<string>();
             set => SetValue(value);
-        }
+        } 
 
         public string PasswordTextBox
         {
@@ -59,23 +61,40 @@ namespace HousePlanner.ViewModels
             _dbManager = containerProvider.Resolve<DBManager.DbManagerService>();
             _eventAggregator = ea;
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
+            ResetValues();
+        }
 
+        private void CheckForErrors()
+        {
+            Regex regex = new Regex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+            Match m = regex.Match(EmailTextBox);
+            if (!m.Success)
+                Errors += "Add correct email!\n";
+            if (!PasswordTextBox.Equals(RepeatPasswordTextBox))
+                Errors += "Passwords do not match\n";
+            if (FirstNameTextBox == "" || LastNameTextBox == "" || PasswordTextBox == "" || RepeatPasswordTextBox == "")
+                Errors += "Fill in all fields";
         }
 
         private async void SignUp()
         {
-            var user = new User()
+            Errors = "";
+            CheckForErrors();
+            if (Errors == "")
             {
-                Email = EmailTextBox,
-                Password = PasswordTextBox,
-                FirstName = FirstNameTextBox,
-                LastName = LastNameTextBox,
+                var user = new User()
+                {
+                    Email = EmailTextBox,
+                    Password = PasswordTextBox,
+                    FirstName = FirstNameTextBox,
+                    LastName = LastNameTextBox,
 
-            };
-            if (await _dbManager.Insert(user) != -1)
-            {
-                MessageBox.Show("Inserted");
-                ResetValues();
+                };
+                if (await _dbManager.Insert(user) != -1)
+                {
+                    MessageBox.Show("Inserted");
+                    ResetValues();
+                }
             }
         }
 

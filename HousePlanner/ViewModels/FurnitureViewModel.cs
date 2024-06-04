@@ -61,7 +61,13 @@ namespace HousePlanner.ViewModels
         public FurnitureViewModel(IEventAggregator ea, IContainerProvider container)
         {
             eventAggregator = ea;
-            eventAggregator.GetEvent<OnOpenRoom>().Subscribe(room => openedRoom = room);
+            eventAggregator.GetEvent<OnOpenRoom>().Subscribe(room => 
+            {
+                eventAggregator.GetEvent<ResetFurnitureCanvas>().Publish();
+                openedRoom = room;
+                LoadFurniture(openedRoom);
+
+            });
             dbManager = container.Resolve<DbManagerService>();
 
             eventAggregator.GetEvent<OnFurnitureRightClicked>().Subscribe(async (furnitureId) =>
@@ -91,6 +97,9 @@ namespace HousePlanner.ViewModels
                 }
 
             });
+
+
+
         }
 
         private void AddFurniture()
@@ -109,9 +118,22 @@ namespace HousePlanner.ViewModels
         private async void DeleteFurniture()
         {
             await dbManager.Delete(selectedFurniture);
+            //await dbManager.DeleteFromBlob(selectedFurniture.Picture);
             eventAggregator.GetEvent<OnDeletedFurniture>().Publish();
         }
 
+        private async void LoadFurniture(Room room)
+        {
+            var furnitureInRoom = await dbManager.GetFiltered<Furniture>(nameof(Furniture.RoomId), room.Id.ToString());
+            foreach(var furniture in furnitureInRoom)
+            {
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    eventAggregator.GetEvent<OnTryInsertingFurniture>().Publish((furniture, false));
+                });
+            }
+
+        }
 
     }
 }

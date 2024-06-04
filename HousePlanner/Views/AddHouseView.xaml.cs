@@ -30,6 +30,7 @@ namespace HousePlanner.Views
             InitializeComponent();
             _eventAggregator = ea;
             _eventAggregator.GetEvent<OnOpenAddHouseWindow>().Subscribe(() => this.ShowDialog());
+            _eventAggregator.GetEvent<OnInsertedHouse>().Subscribe((house) => CloseAndReset());
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -40,8 +41,12 @@ namespace HousePlanner.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Publish();
+            CloseAndReset();
+        }
+        private void CloseAndReset()
+        {
             this.Close();
+            _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Publish();
         }
     }
 }

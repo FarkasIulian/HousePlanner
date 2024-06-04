@@ -45,13 +45,23 @@ namespace HousePlanner.ViewModels
             _eventAggregator = ea;
         }
 
-        protected void ResetValues()
+        protected virtual void ResetValues()
         {
             NameTextBox = "";
             WidthTextBox = "";
             LengthTextBox = "";
             Errors = "";
         }
-
+        protected virtual void CheckForErrors()
+        {
+            int parsed;
+            if (!int.TryParse(WidthTextBox, out parsed))
+                Errors += "Width needs to be a number\n";
+            if (!int.TryParse(LengthTextBox, out parsed))
+                Errors += "Length needs to be a number\n";
+            if (NameTextBox == "" || WidthTextBox == "" || LengthTextBox == "")
+                Errors += "Fill in all fields";
+            
+        }
     }
 }

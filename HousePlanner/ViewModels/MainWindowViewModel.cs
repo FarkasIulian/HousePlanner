@@ -35,7 +35,7 @@ namespace HousePlanner.ViewModels
             }
         }
 
-      
+
 
         public House SelectedHouse
         {
@@ -49,11 +49,13 @@ namespace HousePlanner.ViewModels
 
         public ICommand HouseSelectionChanged => new DelegateCommand<House>(HandleSelectedHouseChange);
 
+        public ICommand DeleteHouseCommand => new DelegateCommand(DeleteHouse);
+
         public ObservableCollection<House> Houses { get; set; } = new ObservableCollection<House>();
 
         public object RoomsView { get; set; }
 
-        
+
         private bool loading = false;
         private User currentUser;
         private DBManager.DbManagerService dbManager;
@@ -61,6 +63,15 @@ namespace HousePlanner.ViewModels
         private List<Room> roomsInHouse = new List<Room>();
         private async void HandleSelectedHouseChange(House newSelection)
         {
+
+            if (newSelection == null)
+            {
+                MessageBox.Show("Add new house layout to add rooms!\n Or select an existing layout!", "Add house", MessageBoxButton.OK, MessageBoxImage.Warning);
+                eventAggregator.GetEvent<OnSendHouseData>().Publish((-1, -1));
+
+            }
+
+
             eventAggregator.GetEvent<ResetCanvas>().Publish();
             FloorNumber = 0;
             LoadRooms();
@@ -99,15 +110,21 @@ namespace HousePlanner.ViewModels
         private async void LoadRooms()
         {
             loading = true;
-            eventAggregator.GetEvent<OnSendHouseData>().Publish((SelectedHouse.Id, FloorNumber));
+            if (SelectedHouse != null)
+            {
+                eventAggregator.GetEvent<OnSendHouseData>().Publish((SelectedHouse.Id, FloorNumber));
 
-            roomsInHouse = await dbManager.GetFiltered<Room>(nameof(Room.HouseId), SelectedHouse.Id.ToString());
-            var filteredRooms = roomsInHouse.Where(r => r.Floor == FloorNumber);
-            foreach (Room room in filteredRooms)
-                Application.Current.Dispatcher.Invoke(delegate
-                {
-                    eventAggregator.GetEvent<OnTryInsertingRoom>().Publish((room, false));
-                });
+                roomsInHouse = await dbManager.GetFiltered<Room>(nameof(Room.HouseId), SelectedHouse.Id.ToString());
+                var filteredRooms = roomsInHouse.Where(r => r.Floor == FloorNumber);
+                foreach (Room room in filteredRooms)
+                    Application.Current.Dispatcher.Invoke(delegate
+                    {
+                        eventAggregator.GetEvent<OnTryInsertingRoom>().Publish((room, false));
+                    });
+            }
+            else
+                eventAggregator.GetEvent<OnSendHouseData>().Publish((-1, -1));
+
             loading = false;
 
         }
@@ -122,26 +139,50 @@ namespace HousePlanner.ViewModels
 
         private void ChangeFloor(string floorAction)
         {
-            var initialFloor = FloorNumber;
-            if (floorAction == "Up")
-                if (FloorNumber < SelectedHouse.NumberOfFloors)
-                    FloorNumber++;
-                else MessageBox.Show("Reached last floor");
-            else if (FloorNumber > 0)
-                FloorNumber--;
-            if (initialFloor != FloorNumber && !loading)
+            if (SelectedHouse != null)
             {
-                eventAggregator.GetEvent<ResetCanvas>().Publish();
-                LoadRooms();
-                eventAggregator.GetEvent<OnSendHouseData>().Publish((SelectedHouse.Id, FloorNumber));
+                var initialFloor = FloorNumber;
+                if (floorAction == "Up")
+                    if (FloorNumber < SelectedHouse.NumberOfFloors)
+                        FloorNumber++;
+                    else MessageBox.Show("Reached last floor");
+                else if (FloorNumber > 0)
+                    FloorNumber--;
+                if (initialFloor != FloorNumber && !loading)
+                {
+                    eventAggregator.GetEvent<ResetCanvas>().Publish();
+                    LoadRooms();
+                    eventAggregator.GetEvent<OnSendHouseData>().Publish((SelectedHouse.Id, FloorNumber));
+                }
+                else
+                    eventAggregator.GetEvent<OnSendHouseData>().Publish((-1, -1));
             }
         }
-        
+
 
         private void AddHouse()
         {
             eventAggregator.GetEvent<OnOpenAddHouseWindow>().Publish();
         }
-    }
 
+
+        private async void DeleteHouse()
+        {
+            if (SelectedHouse != null)
+            {
+                foreach (var room in roomsInHouse)
+                {
+                    var furnitureList = await dbManager.GetFiltered<Furniture>(nameof(Furniture.RoomId), room.Id.ToString());
+                    foreach (var furniture in furnitureList)
+                        await dbManager.Delete(furniture);
+                    await dbManager.Delete(room);
+                }
+
+                await dbManager.Delete(SelectedHouse);
+                Houses.Remove(SelectedHouse);
+                eventAggregator.GetEvent<ResetCanvas>().Publish();
+            }
+        }
+
+    }
 }

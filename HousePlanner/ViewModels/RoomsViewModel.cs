@@ -46,6 +46,12 @@ namespace HousePlanner.ViewModels
             set => SetValue(value);
         }
 
+        public Visibility CanAddRoom
+        {
+            get => GetValue<Visibility>();
+            set => SetValue(value);
+        }
+
         private Room SelectedRoom;
         private DBManager.DbManagerService dbManager;
         private IEventAggregator eventAggregator;
@@ -71,7 +77,13 @@ namespace HousePlanner.ViewModels
                     ModifyRoomOptions = Visibility.Collapsed;
                 }
             });
+            eventAggregator.GetEvent<OnSendHouseData>().Subscribe((payload) =>
+            {
+                if (payload.Item1 == -1) 
+                    CanAddRoom = Visibility.Collapsed;
+                else CanAddRoom = Visibility.Visible;
 
+            });
             eventAggregator.GetEvent<OnChangedRoomPosition>().Subscribe(async (payload) =>
             {
                 var movedRoom = (await dbManager.GetFiltered<Room>(nameof(Room.Id), payload.Item1.ToString())).FirstOrDefault();

@@ -85,10 +85,12 @@ Margin="5,15,0,5"
     Width="150"
     />
             <TextBox Margin="5,15,0,5"
+                         
 Text="{Binding PasswordTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
             <TextBox Margin="5,15,0,5"
+                     x:Name="RepeatPass"
 Text="{Binding RepeatPasswordTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
@@ -98,6 +100,7 @@ HorizontalAlignment="Center"
 Width="150"/>
             <TextBox Margin="5,15,0,5"
 Text="{Binding LastNameTextBox}"
+            
 HorizontalAlignment="Center"
 Width="150"/>
 
@@ -113,6 +116,7 @@ Width="150"/>
         <TextBlock
             
             FontSize="16"
+            VerticalAlignment="Center"
             Text="{Binding Errors}"
             Foreground="Red"
             />

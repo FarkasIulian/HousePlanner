@@ -87,7 +87,7 @@ Text="{Binding LengthTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
             <TextBox Margin="5,15,0,5"
-Text="{Binding FirstNameTextBox}"
+Text="{Binding ImageTextBlock}"
 HorizontalAlignment="Center"
 Width="150">
             </TextBox>

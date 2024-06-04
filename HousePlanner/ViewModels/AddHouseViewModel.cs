@@ -32,6 +32,13 @@ namespace HousePlanner.ViewModels
             get => GetValue<string>();
             set => SetValue(value);
         }
+        
+        public string Errors
+        {
+            get => GetValue<string>();
+            set => SetValue(value);
+        }
+
 
         public ICommand AddHouseCommand => new DelegateCommand(AddHouse);
 
@@ -44,23 +51,34 @@ namespace HousePlanner.ViewModels
             _eventAggregator = ea;
             _eventAggregator.GetEvent<OnSendUserInformation>().Subscribe((user) => EmailTextBox = user.Email,true);
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
+            ResetValues();
            
         }
 
         private async void AddHouse()
         {
-            var house = new House()
+            Errors = "";
+            int parsedValue;
+            bool parsed = int.TryParse(NumberOfFloorsTextBox,out parsedValue);
+            if (!parsed)
+                Errors += "Insert number in number of floors!";
+            if (LayoutNameTextBox == "" || NumberOfFloorsTextBox == "")
+                Errors += "\nFill in all fields!";
+            if (Errors == "")
             {
-                OwnerEmail = EmailTextBox,
-                Name = LayoutNameTextBox,
-                NumberOfFloors = int.Parse(NumberOfFloorsTextBox)
-            };
-            var id = await _dbManager.Insert(house);
-            if (id != -1)
-            {
-                house.Id = id;
-                _eventAggregator.GetEvent<OnInsertedHouse>().Publish(house);
+                var house = new House()
+                {
+                    OwnerEmail = EmailTextBox,
+                    Name = LayoutNameTextBox,
+                    NumberOfFloors = parsedValue
+                };
+                var id = await _dbManager.Insert(house);
+                if (id != -1)
+                {
+                    house.Id = id;
+                    _eventAggregator.GetEvent<OnInsertedHouse>().Publish(house);
 
+                }
             }
         }
 
