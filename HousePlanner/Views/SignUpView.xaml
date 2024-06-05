@@ -5,13 +5,17 @@ xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 xmlns:local="clr-namespace:HousePlanner.Views"
-xmlns:mvvm="http://prismlibrary.com/"
-mc:Ignorable="d" 
-Height="450" Width="325"
+xmlns:mvvm="http://prismlibrary.com/" xmlns:converter="clr-namespace:HousePlanner.Converter"
+                 mc:Ignorable="d" 
+Height="475" Width="325"
 ResizeMode="NoResize"
 WindowStartupLocation="CenterScreen"
 mvvm:ViewModelLocator.AutoWireViewModel="True"
              Title="SignUp">
+    <dx:ThemedWindow.Resources>
+        <converter:BooleanToVisibility x:Key="BooleanToVisibility"/>
+        <converter:InvertedBooleanToVisibility x:Key="InvertedBooleanToVisibility"/>
+    </dx:ThemedWindow.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -65,16 +69,9 @@ Margin="5,15,0,5"
 Text="Last name: "
 FontSize="16"
 HorizontalAlignment="Center"
-Margin="5,15,0,5"
+Margin="5,10,0,0"
 />
             
-
-
-
-
-
-
-
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
             
@@ -84,21 +81,36 @@ Margin="5,15,0,5"
     HorizontalAlignment="Center"
     Width="150"
     />
-            <TextBox Margin="5,15,0,5"
+            <PasswordBox Margin="5,15,0,5"
+                         x:Name="firstPasswordBox"
+                         HorizontalAlignment="Center"
+                         LostFocus="PasswordBox_LostFocus"
+                         Visibility="{Binding ShowPassword,Converter={StaticResource InvertedBooleanToVisibility}}"
+                         Width="150"/>
+            <TextBox 
+                Margin="5,15,0,5"
+                Width="150"
+                Text="{Binding PasswordTextBox}"
+                Visibility="{Binding ShowPassword,Converter={StaticResource BooleanToVisibility}}"
+                />
+            <PasswordBox Margin="5,15,0,5"
+                     x:Name="secondPasswordBox"
+HorizontalAlignment="Center"
+                         LostFocus="secondPasswordBox_LostFocus"
+                         Visibility="{Binding ShowPassword,Converter={StaticResource InvertedBooleanToVisibility}}"
                          
-Text="{Binding PasswordTextBox}"
-HorizontalAlignment="Center"
 Width="150"/>
-            <TextBox Margin="5,15,0,5"
-                     x:Name="RepeatPass"
-Text="{Binding RepeatPasswordTextBox}"
-HorizontalAlignment="Center"
-Width="150"/>
+            <TextBox 
+                Margin="5,15,0,5"
+                Text="{Binding RepeatPasswordTextBox}"
+                Width="150"
+                Visibility="{Binding ShowPassword,Converter={StaticResource BooleanToVisibility}}"
+                />
             <TextBox Margin="5,15,0,5"
 Text="{Binding FirstNameTextBox}"
 HorizontalAlignment="Center"
 Width="150"/>
-            <TextBox Margin="5,15,0,5"
+            <TextBox Margin="5,15,0,0"
 Text="{Binding LastNameTextBox}"
             
 HorizontalAlignment="Center"
@@ -107,7 +119,6 @@ Width="150"/>
         </StackPanel>
         <TextBlock
              Grid.Row="2" Grid.Column="0"
-            VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FontSize="16"
     Text="Errors: "
@@ -116,12 +127,12 @@ Width="150"/>
         <TextBlock
             
             FontSize="16"
-            VerticalAlignment="Center"
             Text="{Binding Errors}"
             Foreground="Red"
             />
         </ScrollViewer>
-        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" >
+        <CheckBox Content="Show passwords" Margin="0,0,0,0" IsChecked="{Binding ShowPassword}" Grid.Row="2" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" />
+        <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,5,0,0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" >
             <Button
                 Content="Sign Up!"
                 Command="{Binding SignupCommand}"

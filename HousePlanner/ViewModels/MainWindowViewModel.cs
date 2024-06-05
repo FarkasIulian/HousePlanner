@@ -63,16 +63,7 @@ namespace HousePlanner.ViewModels
         private List<Room> roomsInHouse = new List<Room>();
         private async void HandleSelectedHouseChange(House newSelection)
         {
-
-            if (newSelection == null)
-            {
-                MessageBox.Show("Add new house layout to add rooms!\n Or select an existing layout!", "Add house", MessageBoxButton.OK, MessageBoxImage.Warning);
-                eventAggregator.GetEvent<OnSendHouseData>().Publish((-1, -1));
-
-            }
-
-
-            eventAggregator.GetEvent<ResetCanvas>().Publish();
+            eventAggregator.GetEvent<OnResetCanvas>().Publish();
             FloorNumber = 0;
             LoadRooms();
         }
@@ -133,8 +124,12 @@ namespace HousePlanner.ViewModels
         {
             var houses = await dbManager.GetFiltered<House>(nameof(House.OwnerEmail), currentUser.Email);
             Houses.AddRange(houses);
+            if (houses.Count() == 0)
+            {
+                MessageBox.Show("Add new house layout to add rooms!\n Or select an existing layout!", "Add house", MessageBoxButton.OK, MessageBoxImage.Warning);
+                eventAggregator.GetEvent<OnSendHouseData>().Publish((-1, -1));
 
-
+            }
         }
 
         private void ChangeFloor(string floorAction)
@@ -150,7 +145,7 @@ namespace HousePlanner.ViewModels
                     FloorNumber--;
                 if (initialFloor != FloorNumber && !loading)
                 {
-                    eventAggregator.GetEvent<ResetCanvas>().Publish();
+                    eventAggregator.GetEvent<OnResetCanvas>().Publish();
                     LoadRooms();
                     eventAggregator.GetEvent<OnSendHouseData>().Publish((SelectedHouse.Id, FloorNumber));
                 }
@@ -180,7 +175,7 @@ namespace HousePlanner.ViewModels
 
                 await dbManager.Delete(SelectedHouse);
                 Houses.Remove(SelectedHouse);
-                eventAggregator.GetEvent<ResetCanvas>().Publish();
+                eventAggregator.GetEvent<OnResetCanvas>().Publish();
             }
         }
 

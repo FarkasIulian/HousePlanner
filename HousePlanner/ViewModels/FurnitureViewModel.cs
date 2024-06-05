@@ -68,7 +68,7 @@ namespace HousePlanner.ViewModels
             eventAggregator = ea;
             eventAggregator.GetEvent<OnOpenRoom>().Subscribe(room => 
             {
-                eventAggregator.GetEvent<ResetFurnitureCanvas>().Publish();
+                eventAggregator.GetEvent<OnResetFurnitureCanvas>().Publish();
                 openedRoom = room;
                 LoadFurniture(openedRoom);
                 OpenedRoomName = openedRoom.Name;

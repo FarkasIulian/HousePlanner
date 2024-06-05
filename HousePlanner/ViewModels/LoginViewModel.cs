@@ -26,14 +26,26 @@ namespace HousePlanner.ViewModels
         public string PasswordTextBox
         {
             get => GetValue<string>();
-            set => SetValue(value);
+            set
+            {
+                SetValue(value);
+                eventAggregator.GetEvent<OnUpdateLogInPasswordBox>().Publish(value);
+            }
         }
+
 
         public Visibility IsErrorTextVisible
         {
             get => GetValue<Visibility>();
             set => SetValue(value);
         }
+
+        public bool ShowPasswordCheckBox
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
 
         public string ErrorText
         {
@@ -62,6 +74,10 @@ namespace HousePlanner.ViewModels
             eventAggregator = ea;
             IsErrorTextVisible = Visibility.Hidden;
             eventAggregator.GetEvent<OnRequestUserEmail>().Subscribe(() => eventAggregator.GetEvent<OnSendUserInformation>().Publish(user));
+            eventAggregator.GetEvent<OnSendPassword>().Subscribe((password) => PasswordTextBox = password);
+
+            ShowPasswordCheckBox = false;
+
         }
 
 
@@ -102,6 +118,7 @@ namespace HousePlanner.ViewModels
             }
         }
 
+       
 
         private void SignUp()
         {

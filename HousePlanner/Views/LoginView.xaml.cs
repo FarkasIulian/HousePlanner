@@ -25,18 +25,24 @@ namespace HousePlanner.Views
     /// </summary>
     public partial class LoginView : ThemedWindow
     {
+        private IEventAggregator _eventAggregator;
         public LoginView(IEventAggregator ea)
         {
            
             InitializeComponent();
+            _eventAggregator = ea;
             ea.GetEvent<OnLoginClosed>().Subscribe(
                 (payload) =>
                 {
                     this.DialogResult = true;
                     this.Close();
                 });
+            ea.GetEvent<OnUpdateLogInPasswordBox>().Subscribe(password => passwordBox.Password = password);
         }
 
-       
+        private void passwordBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _eventAggregator.GetEvent<OnSendPassword>().Publish(passwordBox.Password);
+        }
     }
 }

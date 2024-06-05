@@ -36,7 +36,7 @@ namespace HousePlanner.Views
             _eventAggregator = ea;
             _dbManager = container.Resolve<DbManagerService>();
             ea.GetEvent<OnTryInsertingRoom>().Subscribe(payload => AddRoomToCanvas(payload.Item1, payload.Item2));
-            ea.GetEvent<ResetCanvas>().Subscribe(RoomsGrid.Children.Clear);
+            ea.GetEvent<OnResetCanvas>().Subscribe(RoomsGrid.Children.Clear);
             ea.GetEvent<OnModifiedRoom>().Subscribe(async (room) =>
             {
                 var index = RoomsGrid.Children.IndexOf(selectedButton);

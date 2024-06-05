@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HousePlannerCore.Events
 {
-    public class ResetCanvas : PubSubEvent
+    public class OnResetCanvas : PubSubEvent
     {
     }
 }

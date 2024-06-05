@@ -22,18 +22,29 @@ namespace HousePlanner.ViewModels
         {
             get => GetValue<string>();
             set => SetValue(value);
-        } 
+        }
 
         public string PasswordTextBox
         {
             get => GetValue<string>();
-            set => SetValue(value);
+            set
+            {
+                SetValue(value);
+                _eventAggregator.GetEvent<OnUpdateSignUpPasswordBoxes>().Publish((value, 1));
+
+
+            }
         }
         public string RepeatPasswordTextBox
         {
             get => GetValue<string>();
-            set => SetValue(value);
+            set
+            {
+                SetValue(value);
+                _eventAggregator.GetEvent<OnUpdateSignUpPasswordBoxes>().Publish((value, 2));
+            }
         }
+
         public string FirstNameTextBox
         {
             get => GetValue<string>();
@@ -50,6 +61,12 @@ namespace HousePlanner.ViewModels
             set => SetValue(value);
         }
 
+        public bool ShowPassword
+        {
+            get => GetValue<bool>();
+            set => SetValue(value);
+        }
+
         public ICommand SignupCommand => new DelegateCommand(SignUp);
 
         private DBManager.DbManagerService _dbManager;
@@ -61,15 +78,35 @@ namespace HousePlanner.ViewModels
             _dbManager = containerProvider.Resolve<DBManager.DbManagerService>();
             _eventAggregator = ea;
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
+            _eventAggregator.GetEvent<OnSendSignUpPassword>().Subscribe((payload) =>
+            {
+                switch (payload.Item2)
+                {
+                    case 1:
+                        PasswordTextBox = payload.Item1;
+                        break;
+                    case 2:
+                        RepeatPasswordTextBox = payload.Item1;
+                        break;
+                }
+
+            });
+            ShowPassword = false;
             ResetValues();
         }
 
-        private void CheckForErrors()
+        private async Task CheckForErrors()
         {
             Regex regex = new Regex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
             Match m = regex.Match(EmailTextBox);
             if (!m.Success)
                 Errors += "Add correct email!\n";
+            else
+            {
+                var user = await _dbManager.GetFiltered<User>(nameof(User.Email), EmailTextBox);
+                if (user.Count() != 0)
+                    Errors += "Email already exists!\n";
+            }
             if (!PasswordTextBox.Equals(RepeatPasswordTextBox))
                 Errors += "Passwords do not match\n";
             if (FirstNameTextBox == "" || LastNameTextBox == "" || PasswordTextBox == "" || RepeatPasswordTextBox == "")
@@ -79,7 +116,7 @@ namespace HousePlanner.ViewModels
         private async void SignUp()
         {
             Errors = "";
-            CheckForErrors();
+            await CheckForErrors();
             if (Errors == "")
             {
                 var user = new User()

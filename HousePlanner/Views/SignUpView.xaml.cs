@@ -30,6 +30,18 @@ namespace HousePlanner.Views
             InitializeComponent();
             _eventAggregator = ea;
             _eventAggregator.GetEvent<OnOpenSignUpWindow>().Subscribe(() => this.ShowDialog());
+            _eventAggregator.GetEvent<OnUpdateSignUpPasswordBoxes>().Subscribe((payload) =>
+            {
+                switch (payload.Item2)
+                {
+                    case 1:
+                        firstPasswordBox.Password = payload.Item1;
+                        break;
+                    case 2:
+                        secondPasswordBox.Password = payload.Item1;
+                        break;
+                }
+            });
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -42,6 +54,17 @@ namespace HousePlanner.Views
         {
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Publish();
             this.Close();
+        }
+
+        private void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _eventAggregator.GetEvent<OnSendSignUpPassword>().Publish((firstPasswordBox.Password, 1));
+        }
+
+        private void secondPasswordBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _eventAggregator.GetEvent<OnSendSignUpPassword>().Publish((secondPasswordBox.Password, 2));
+
         }
     }
 }
