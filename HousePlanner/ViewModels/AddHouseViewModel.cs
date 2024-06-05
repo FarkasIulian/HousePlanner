@@ -49,7 +49,7 @@ namespace HousePlanner.ViewModels
         {
             _dbManager = container.Resolve<DBManager.DbManagerService>();
             _eventAggregator = ea;
-            _eventAggregator.GetEvent<OnSendUserInformation>().Subscribe((user) => EmailTextBox = user.Email,true);
+                _eventAggregator.GetEvent<OnSendUserInformation>().Subscribe((user) => EmailTextBox = user.Email,true);
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
             ResetValues();
            

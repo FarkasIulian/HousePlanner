@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowState="Normal"
-        Title="Shell"  >
+        Title="HousePlanner"  >
     <Grid>
             <ContentControl prism:RegionManager.RegionName="MainWindowViewRegion"/>
     </Grid>

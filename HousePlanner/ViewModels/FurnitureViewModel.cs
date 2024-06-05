@@ -35,6 +35,11 @@ namespace HousePlanner.ViewModels
             set => SetValue(value);
         }
 
+        public string OpenedRoomName
+        {
+            get => GetValue<string>();
+            set => SetValue(value);
+        }
 
         public Image SelectedFurniturePicture
         {
@@ -66,6 +71,7 @@ namespace HousePlanner.ViewModels
                 eventAggregator.GetEvent<ResetFurnitureCanvas>().Publish();
                 openedRoom = room;
                 LoadFurniture(openedRoom);
+                OpenedRoomName = openedRoom.Name;
 
             });
             dbManager = container.Resolve<DbManagerService>();

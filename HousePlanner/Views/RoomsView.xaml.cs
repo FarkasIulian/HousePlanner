@@ -40,6 +40,22 @@ namespace HousePlanner.Views
             ea.GetEvent<OnModifiedRoom>().Subscribe(async (room) =>
             {
                 var index = RoomsGrid.Children.IndexOf(selectedButton);
+                if (index == -1)
+                {
+                    foreach (var roomInHouse in RoomsGrid.Children)
+                    {
+                        var button = roomInHouse as Button;
+                        if (button != null)
+                        {
+                            if (button.Name == $"_{room.Id}")
+                            {
+                                index = RoomsGrid.Children.IndexOf(button);
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 var newButton = new Button()
                 {
                     Name = $"_{room.Id}",

@@ -38,13 +38,30 @@ namespace HousePlanner.Views
             ea.GetEvent<OnModifiedFurniture>().Subscribe(async (furniture) =>
             {
                 var index = FurnitureGrid.Children.IndexOf(selectedFurniture);
+                if(index == -1)
+                {
+                    foreach(var furnitureInRoom in FurnitureGrid.Children)
+                    {
+                        var image = furnitureInRoom as Image;
+                        if(image != null)
+                        {
+                            if (image.Uid == $"_{furniture.Id}")
+                            {
+                                index = FurnitureGrid.Children.IndexOf(image);
+                                break;
+                            }
+                        }
+                    }
+                }
                 var newFurniture = new Image()
                 {
                     Uid = $"_{furniture.Id}",
                     Name = furniture.Name,
                     Width = furniture.Length,
                     Height = furniture.Width
+
                 };
+                newFurniture.Stretch = System.Windows.Media.Stretch.None;
                 if (!IsHittingExistingFurniture(new System.Windows.Point(furniture.PositionInRoom.X, furniture.PositionInRoom.Y), newFurniture))
                 {
                     ((Image)FurnitureGrid.Children[index]).Name = furniture.Name;
@@ -72,6 +89,7 @@ namespace HousePlanner.Views
                 Height = furniture.Width,
                 Width = furniture.Length
             };
+            newFurniture.Stretch = System.Windows.Media.Stretch.Fill;
             if (!File.Exists(furniture.Picture))
                 await _dbManager.DownloadPicture(furniture.Picture);
 
@@ -88,7 +106,6 @@ namespace HousePlanner.Views
                 {
                     furniture.Picture = Path.GetFileName(furniture.Picture);
                     var id = await _dbManager.Insert(furniture);
-                    _eventAggregator.GetEvent<OnFurnitureValidForInsertion>().Publish(furniture);
                     newFurniture.Uid = $"_{id}";
 
                 }

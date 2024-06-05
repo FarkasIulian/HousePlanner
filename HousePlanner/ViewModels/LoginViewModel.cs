@@ -7,6 +7,8 @@ using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -43,7 +45,10 @@ namespace HousePlanner.ViewModels
         public ICommand LoginCommand => new DelegateCommand(LoginLogic);
         public ICommand SignupCommand => new DelegateCommand(SignUp);
 
-       
+        public ICommand ForgotPasswordCommand => new DelegateCommand(ForgotPassword);
+
+
+
 
         private DbManagerService dbManager;
         private IEventAggregator eventAggregator;
@@ -121,13 +126,47 @@ namespace HousePlanner.ViewModels
         {
             if (PasswordTextBox.Equals(user.Password))
             {
-                MessageBox.Show("Te-ai logat bine","Succesful Login",MessageBoxButton.OK,MessageBoxImage.Information);
+                MessageBox.Show("Login was succesful!","Succesful Login",MessageBoxButton.OK,MessageBoxImage.Information);
                 eventAggregator.GetEvent<OnLoginClosed>().Publish(user);
                 
             }
             else
                 SetErrorText("Password is incorrect!");
+        }
 
+        private async void ForgotPassword()
+        {
+            if (string.IsNullOrEmpty(UsernameTextBox))
+            {
+                MessageBox.Show("Please fill in email!");
+                return;
+            }
+
+            try
+            {
+
+                var user = (await dbManager.GetFiltered<User>(nameof(User.Email), UsernameTextBox)).First();
+                var smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("higurashi.ryuk@gmail.com", "gzjl gzkq nwdp ppzr"),
+                    EnableSsl = true,
+                };
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("higurashi.ryuk@gmail.com"),
+                    Subject = "Password",
+                    Body = "Your password is: " + user.Password,
+                    IsBodyHtml = true,
+                };
+                mailMessage.To.Add(UsernameTextBox);
+                smtpClient.Send(mailMessage);
+                MessageBox.Show("Check your email for the password!");
+            }
+            catch (SmtpException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

@@ -9,7 +9,8 @@
         xmlns:mvvm="http://prismlibrary.com/"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mvvm:ViewModelLocator.AutoWireViewModel="True"
-        mc:Ignorable="d">
+        mc:Ignorable="d"
+                 Title="{Binding OpenedRoomName}">
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
 
         <Grid>
