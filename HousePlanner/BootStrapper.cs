@@ -52,7 +52,6 @@ namespace HousePlanner
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             //to do when get home, remove reference to DbManagerService, initialize it in Core
-            EventAggregatorProvider.EventAggregator = Container.Resolve<IEventAggregator>();
         }
     }
 }

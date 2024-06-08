@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace HousePlanner.ViewModels
@@ -43,6 +44,12 @@ namespace HousePlanner.ViewModels
             set => SetValue(value);
         }
 
+        public string NameOfSearchedObject
+        {
+            get => GetValue<string>();
+            set => SetValue(value);
+        }
+
 
         public ICommand<string> ChangeFloorCommand => new DelegateCommand<string>(ChangeFloor);
         public System.Windows.Input.ICommand AddNewHouseCommand => new DelegateCommand(AddHouse);
@@ -50,6 +57,9 @@ namespace HousePlanner.ViewModels
         public ICommand HouseSelectionChanged => new DelegateCommand<House>(HandleSelectedHouseChange);
 
         public ICommand DeleteHouseCommand => new DelegateCommand(DeleteHouse);
+
+        public ICommand SearchCommand => new DelegateCommand<string>(Search);
+
 
         public ObservableCollection<House> Houses { get; set; } = new ObservableCollection<House>();
 
@@ -178,6 +188,36 @@ namespace HousePlanner.ViewModels
                 eventAggregator.GetEvent<OnResetCanvas>().Publish();
             }
         }
+
+        private async void Search(string type)
+        {
+            if (string.IsNullOrEmpty(NameOfSearchedObject))
+                return;
+            var classType = Type.GetType("HousePlannerCore.Models." + type +", HousePlannerCore");
+            string displayFoundObjects = "";
+            if(classType == typeof(Room))
+            {
+                var foundRooms = roomsInHouse.Where(r => r.Name.Equals(NameOfSearchedObject));
+                displayFoundObjects = $"Found {foundRooms.Count()} that match provided name!\n";
+                foreach(var room in foundRooms)
+                    displayFoundObjects += $"Name: {room.Name} - Floor: {room.Floor}\n";
+            }
+            else if(classType == typeof(Furniture))
+            {
+                var foundFurniture = await dbManager.GetFiltered<Furniture>(nameof(Furniture.Name), NameOfSearchedObject);
+                displayFoundObjects = $"Found {foundFurniture.Count()} that match provided name!\n";
+                foreach (var furniture in foundFurniture)
+                {
+                    var room = roomsInHouse.Where(r => r.Id == furniture.RoomId).First();
+                    displayFoundObjects += $"Name: {furniture.Name}  - Room Name: {room.Name} - Floor: {room.Floor}\n";
+                }
+            }
+            MessageBox.Show(displayFoundObjects);
+                
+
+
+        }
+
 
     }
 }

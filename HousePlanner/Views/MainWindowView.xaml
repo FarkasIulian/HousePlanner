@@ -52,9 +52,22 @@
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="Delete House Layout" Command="{Binding DeleteHouseCommand}"/>
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" CommandParameter="Up" Content="Go up a floor" Command="{Binding ChangeFloorCommand}"/>
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" CommandParameter="Down" Content="Go down a floor" Command="{Binding ChangeFloorCommand}"/>
+                <StackPanel Margin="20,20,25,0"  Orientation="Horizontal">
+                    <TextBlock Margin="0,0,15,0" Text="Search for: " FontSize="16"/>
+                    <ComboBox FontSize="16" x:Name="TypeComboBox" SelectedIndex="0" >
+                        <ComboBoxItem Content="Room" FontSize="16"/>
+                        <ComboBoxItem Content ="Furniture" FontSize="16"/> 
+                        <ComboBoxItem Content ="Item" FontSize="16"/> 
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Margin="20,20,25,0" Orientation="Horizontal">
+                    <TextBlock Text="Name: " FontSize="16"/>
+                    <TextBox Text="{Binding NameOfSearchedObject}" Width="120" FontSize="16"/>
+                </StackPanel>
+                <Button Margin="20,30,25,0" Height="100" FontSize="16" CommandParameter="{Binding ElementName=TypeComboBox,Path=SelectedItem.Content}" Content="Search!" Command="{Binding SearchCommand}"/>
             </StackPanel>
             <ContentControl Content="{Binding RoomsView}" Grid.Row="1" Grid.Column="1"/>
-            
+
 
         </Grid>
     </ScrollViewer>

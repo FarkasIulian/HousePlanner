@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DBManager.DbManagerService" Collapsed="true">
+    <Position X="9.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="HousePlanner.ViewModels.AddFurnitureViewModel">
+    <Position X="14.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAEAAABAAAgAAAAAIAAAgAAAAAwAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\AddFurnitureViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HousePlanner.ViewModels.AddHouseViewModel">
+    <Position X="7.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAYACgAAIAAAAAAAEIAAAAABAAAAAAAA=</HashCode>
+      <FileName>ViewModels\AddHouseViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_dbManager" />
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HousePlanner.ViewModels.AddRoomAndFurnitureBase">
+    <Position X="13.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAACAAAAAQACAAAIIAAgAAABAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\AddRoomAndFurnitureBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_dbManager" />
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HousePlanner.ViewModels.AddRoomViewModel">
+    <Position X="12.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAACAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>ViewModels\AddRoomViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HousePlanner.ViewModels.FurnitureViewModel">
+    <Position X="7.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEBAgAQBCAgAAEAAAAAAIAEAgAAAAAQQAAAEAiAAA=</HashCode>
+      <FileName>ViewModels\FurnitureViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dbManager" />
+      <Field Name="eventAggregator" />
+      <Field Name="openedRoom" />
+      <Field Name="selectedFurniture" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HousePlanner.ViewModels.LoginViewModel">
+    <Position X="4.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAgBAAgAiAACAIAgACIgAAAAAAAEIQAABACAAQA=</HashCode>
+      <FileName>ViewModels\LoginViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dbManager" />
+      <Field Name="eventAggregator" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HousePlanner.ViewModels.MainWindowViewModel">
+    <Position X="4.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAIAAADACAAAIECAAAAACBAADAAQJBAAAAIcA=</HashCode>
+      <FileName>ViewModels\MainWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dbManager" />
+      <Field Name="eventAggregator" />
+      <Field Name="currentUser" />
+      <Property Name="SelectedHouse" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="roomsInHouse" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="HousePlanner.ViewModels.RoomsViewModel">
+    <Position X="16.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAhAAAAgAAiAAAAAIIgAAoAAAACAAQBAAAAAAEA=</HashCode>
+      <FileName>ViewModels\RoomsViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dbManager" />
+      <Field Name="eventAggregator" />
+      <Field Name="SelectedRoom" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HousePlanner.ViewModels.SignUpViewModel">
+    <Position X="16.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAACgAgACQACAAAIIAAgAAEAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SignUpViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_dbManager" />
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HousePlanner.Views.AddFurnitureView" BaseTypeListCollapsed="true">
+    <Position X="13.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAgAEAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\AddFurnitureView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HousePlanner.Views.AddHouseView" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAgAEAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\AddHouseView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HousePlanner.Views.AddRoomView" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAgAEAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\AddRoomView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HousePlanner.Views.FurnitureView" BaseTypeListCollapsed="true">
+    <Position X="9.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAABCAAAAAAACABAAgBAAEQAABACAAAIAAAAAAAA=</HashCode>
+      <FileName>Views\FurnitureView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_dbManager" />
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HousePlanner.Views.LoginView" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\LoginView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HousePlanner.Views.RoomsView" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAAgCAAAAQAAiADAAABAAAQAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\RoomsView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_dbManager" />
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HousePlanner.Views.SignUpView" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACEAAAAAAAAAAAgAEAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\SignUpView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_eventAggregator" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HousePlannerCore.Models.House" Collapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="HousePlannerCore.Models.Furniture" Collapsed="true">
+    <Position X="6.5" Y="16" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="HousePlannerCore.Models.Room" Collapsed="true">
+    <Position X="13.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="HousePlannerCore.Models.User" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Prism.Events.IEventAggregator" Collapsed="true">
+    <Position X="10.5" Y="10" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
