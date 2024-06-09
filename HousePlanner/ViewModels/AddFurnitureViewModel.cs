@@ -30,7 +30,7 @@ namespace HousePlanner.ViewModels
         }
 
 
-        public AddFurnitureViewModel(IEventAggregator ea, IContainerProvider container) : base(ea, container) 
+        public AddFurnitureViewModel(IEventAggregator ea, IContainerProvider container,DbManagerService db) : base(ea, container,db) 
         {
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
             _eventAggregator.GetEvent<OnOpenRoom>().Subscribe(payload =>
@@ -41,7 +41,6 @@ namespace HousePlanner.ViewModels
                 point => position = point);
             ResetValues();
 
-            _dbManager.Insert(new Item() { Name = "Test" });
         }
 
         protected override void CheckForErrors()

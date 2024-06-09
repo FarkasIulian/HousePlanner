@@ -10,7 +10,8 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowState="Normal"
-        Title="HousePlanner"  >
+        Title="HousePlanner"
+                 Closing="ThemedWindow_Closing">
     <Grid>
             <ContentControl prism:RegionManager.RegionName="MainWindowViewRegion"/>
     </Grid>

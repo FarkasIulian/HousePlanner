@@ -39,9 +39,9 @@ namespace HousePlanner.ViewModels
         protected DbManagerService _dbManager;
         protected System.Drawing.Point position;
 
-        public AddRoomAndFurnitureBase(IEventAggregator ea,IContainerProvider container)
+        public AddRoomAndFurnitureBase(IEventAggregator ea,IContainerProvider container,DbManagerService db)
         {
-            _dbManager = container.Resolve<DBManager.DbManagerService>();
+            _dbManager = db;
             _eventAggregator = ea;
         }
 

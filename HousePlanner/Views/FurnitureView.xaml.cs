@@ -1,5 +1,6 @@
 ﻿using DBManager;
 using DevExpress.Xpf.Core;
+using DevExpress.XtraEditors;
 using HousePlannerCore.Events;
 using HousePlannerCore.Models;
 using Prism.Events;
@@ -28,11 +29,11 @@ namespace HousePlanner.Views
         private Image selectedFurniture = null;
         private System.Windows.Point initialDragPoint = new System.Windows.Point();
 
-        public FurnitureView(IEventAggregator ea, IContainerProvider container)
+        public FurnitureView(IEventAggregator ea, IContainerProvider container, DbManagerService db)
         {
             InitializeComponent();
             _eventAggregator = ea;
-            _dbManager = container.Resolve<DbManagerService>();
+            _dbManager = db;
             ea.GetEvent<OnTryInsertingFurniture>().Subscribe(payload => AddRoomToCanvas(payload.Item1, payload.Item2));
             ea.GetEvent<OnResetFurnitureCanvas>().Subscribe(FurnitureGrid.Children.Clear);
             ea.GetEvent<OnModifiedFurniture>().Subscribe(async (furniture) =>
@@ -169,7 +170,7 @@ namespace HousePlanner.Views
                     if (hitbox.IntersectsWith(rect))
                     {
                         if (showMessageBox)
-                            MessageBox.Show($"Collides with furniture", "Furniture Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            XtraMessageBox.Show($"Collides with furniture", "Furniture Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                         return true;
                     }
 
@@ -179,7 +180,7 @@ namespace HousePlanner.Views
             if (Canvas.GetLeft(furnitureToAdd) + furnitureToAdd.Width > FurnitureGrid.Width || Canvas.GetTop(furnitureToAdd) + furnitureToAdd.Height > FurnitureGrid.Height)
             {
                 if (showMessageBox)
-                    MessageBox.Show("Out of room layout", "Floor Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    XtraMessageBox.Show("Out of room layout", "Floor Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return true;
             }
 

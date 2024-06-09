@@ -23,7 +23,7 @@ namespace HousePlanner.ViewModels
         private long houseId;
         private int currentFloor;
 
-        public AddRoomViewModel(IEventAggregator ea, IContainerProvider container) : base(ea, container)
+        public AddRoomViewModel(IEventAggregator ea, IContainerProvider container, DbManagerService db) : base(ea, container,db)
         {
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
             _eventAggregator.GetEvent<OnSendHouseData>().Subscribe(payload =>

@@ -1,17 +1,7 @@
 ﻿using DevExpress.Xpf.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using DevExpress.XtraEditors;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace HousePlanner
 {
@@ -24,5 +14,25 @@ namespace HousePlanner
         {
             InitializeComponent();
         }
+
+        private void ThemedWindow_Closing(object sender, CancelEventArgs e)
+        {
+            XtraMessageBoxArgs args = new XtraMessageBoxArgs()
+            {
+                Caption = "Confirmation",
+                Text = "Do you want to close the application?",
+                Buttons = new DialogResult[] { System.Windows.Forms.DialogResult.Yes, System.Windows.Forms.DialogResult.No },
+                DefaultButtonIndex = 1,
+                AutoCloseOptions = new AutoCloseOptions()
+                {
+                    Delay = 5000,
+                    ShowTimerOnDefaultButton = true,
+                }
+            };
+            if (XtraMessageBox.Show(args) == System.Windows.Forms.DialogResult.No)
+                e.Cancel = true;
+        }
+
+        
     }
 }

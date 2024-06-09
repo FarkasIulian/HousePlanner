@@ -1,5 +1,6 @@
 ﻿using DBManager;
 using DevExpress.Mvvm;
+using DevExpress.XtraEditors;
 using HousePlannerCore.Events;
 using HousePlannerCore.Models;
 using Prism.Events;
@@ -68,9 +69,9 @@ namespace HousePlanner.ViewModels
         private User? user;
 
 
-        public LoginViewModel(IEventAggregator ea, IContainerProvider provider)
-        {            
-            dbManager = provider.Resolve<DbManagerService>();
+        public LoginViewModel(IEventAggregator ea, IContainerProvider provider,DbManagerService db)
+        {
+            dbManager = db;
             eventAggregator = ea;
             IsErrorTextVisible = Visibility.Hidden;
             eventAggregator.GetEvent<OnRequestUserEmail>().Subscribe(() => eventAggregator.GetEvent<OnSendUserInformation>().Publish(user));
@@ -143,7 +144,7 @@ namespace HousePlanner.ViewModels
         {
             if (PasswordTextBox.Equals(user.Password))
             {
-                MessageBox.Show("Login was succesful!","Succesful Login",MessageBoxButton.OK,MessageBoxImage.Information);
+                XtraMessageBox.Show("Login was succesful!","Succesful Login", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
                 eventAggregator.GetEvent<OnLoginClosed>().Publish(user);
                 
             }
@@ -155,7 +156,7 @@ namespace HousePlanner.ViewModels
         {
             if (string.IsNullOrEmpty(UsernameTextBox))
             {
-                MessageBox.Show("Please fill in email!");
+                XtraMessageBox.Show("Please fill in email!");
                 return;
             }
 
@@ -178,11 +179,11 @@ namespace HousePlanner.ViewModels
                 };
                 mailMessage.To.Add(UsernameTextBox);
                 smtpClient.Send(mailMessage);
-                MessageBox.Show("Check your email for the password!");
+                XtraMessageBox.Show("Check your email for the password!");
             }
             catch (SmtpException ex)
             {
-                MessageBox.Show(ex.Message);
+                XtraMessageBox.Show(ex.Message);
             }
         }
     }

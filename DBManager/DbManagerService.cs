@@ -10,43 +10,9 @@ namespace DBManager
 {
     public class DbManagerService
     {
-        private Dictionary<string, string> queryDictionary = new Dictionary<string, string>
-        {
-            { "InsertUser","https://initdb.azurewebsites.net/api/insertIntoDBUser?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "GetAllUser","https://initdb.azurewebsites.net/api/getAllUser?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "GetFilteredUser","https://initdb.azurewebsites.net/api/filteredGetUser?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "DeleteUser","https://initdb.azurewebsites.net/api/deleteUser?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "UpdateUser","https://initdb.azurewebsites.net/api/updateUser?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-
-            { "InsertHouse","https://initdb.azurewebsites.net/api/insertIntoDBHouse?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "GetAllHouse","https://initdb.azurewebsites.net/api/getAllHouse?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "GetFilteredHouse","https://initdb.azurewebsites.net/api/filteredGetHouse?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "DeleteHouse","https://initdb.azurewebsites.net/api/deleteHouse?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "UpdateHouse","https://initdb.azurewebsites.net/api/updateHouse?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-
-            { "InsertFurniture","https://initdb.azurewebsites.net/api/insertIntoDBFurniture?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "GetAllFurniture","https://initdb.azurewebsites.net/api/getAllFurniture?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "GetFilteredFurniture","https://initdb.azurewebsites.net/api/filteredGetFurniture?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "DeleteFurniture","https://initdb.azurewebsites.net/api/deleteFurniture?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "UpdateFurniture","https://initdb.azurewebsites.net/api/updateFurniture?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-
-            { "InsertRoom","https://initdb.azurewebsites.net/api/insertIntoDBRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "GetAllRoom","https://initdb.azurewebsites.net/api/getAllRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "GetFilteredRoom","https://initdb.azurewebsites.net/api/filteredGetRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "DeleteRoom","https://initdb.azurewebsites.net/api/deleteRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "UpdateRoom","https://initdb.azurewebsites.net/api/updateRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            
-            {"InsertItem", "https://initdb.azurewebsites.net/api/insertIntoDBItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" },
-            {"GetAllItem", "https://initdb.azurewebsites.net/api/getAllItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" },
-            {"GetFilteredItem", "https://initdb.azurewebsites.net/api/filteredGetItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" },
-            {"DeleteItem", "https://initdb.azurewebsites.net/api/deleteItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" },
-            {"UpdateItem", "https://initdb.azurewebsites.net/api/updateItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" }
-        };
-
 
         private string URL = "https://initdb.azurewebsites.net/api/";
         private string code = "?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D";
-
 
         private static string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=testingfirstazuredemo;AccountKey=O3/UjkVlO63CK8HnuuCTp+TldwPjexDUhwYzXYdEEQfDBjKuc0cLginUXVhaMbiO0SLxupMkMgx6+ASt5lgfmg==;EndpointSuffix=core.windows.net";
         private static CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
@@ -54,6 +20,7 @@ namespace DBManager
         private static CloudBlobContainer container = blobClient.GetContainerReference("images");
         public DbManagerService(IEventAggregator ea)
         {
+
         }
 
 
@@ -90,15 +57,14 @@ namespace DBManager
 
         public async Task<int> Insert<T>(T model)
         {
-            var operation = "Insert";
+            var operation = "insertIntoDB";
             var type = typeof(T);
-            var dexOperation = operation + type.Name;
             var jsonObject = JsonConvert.SerializeObject(model);
             var content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json");
-            var postLink = URL + dexOperation + code;
+            var postLink = URL + operation + type.Name + code;
             using (HttpClient client = new HttpClient())
             {
-                var tot = await client.PostAsync(queryDictionary[dexOperation], content);
+                var tot = await client.PostAsync(postLink, content);
                 tot.EnsureSuccessStatusCode();
                 if (tot.IsSuccessStatusCode)
                 {
@@ -119,13 +85,14 @@ namespace DBManager
 
         public async Task<List<T>> GetAll<T>()
         {
-            var operation = "GetAll";
+            var operation = "getAll";
             var type = typeof(T);
-            var dexOperation = operation + type.Name;
+            var postLink = URL + operation + type.Name + code;
+
             using (HttpClient client = new HttpClient())
             {
 
-                var tot = await client.GetAsync(queryDictionary[dexOperation]);
+                var tot = await client.GetAsync(postLink);
                 tot.EnsureSuccessStatusCode();
                 if (tot.IsSuccessStatusCode)
                 {
@@ -147,13 +114,14 @@ namespace DBManager
 
         public async Task<List<T>> GetFiltered<T>(string columnName, string value)
         {
-            var operation = "GetFiltered";
+            var operation = "filteredGet";
             var type = typeof(T);
-            var dexOperation = operation + type.Name;
-            //columnName = EnsureCorrectColumnFormat(columnName);
+            
+            var postLink = URL + operation + type.Name + code;
+
             using (HttpClient client = new HttpClient())
             {
-                var tot = await client.GetAsync(queryDictionary[dexOperation] + $"&columnName={columnName}&columnValue={value}");
+                var tot = await client.GetAsync(postLink + $"&columnName={columnName}&columnValue={value}");
                 tot.EnsureSuccessStatusCode();
                 if (tot.IsSuccessStatusCode)
                 {
@@ -174,14 +142,15 @@ namespace DBManager
 
         public async Task<bool> Update<T>(T model)
         {
-            var operation = "Update";
+            var operation = "update";
             var type = typeof(T);
-            var dexOperation = operation + type.Name;
             var jsonObject = JsonConvert.SerializeObject(model);
+            var postLink = URL + operation + type.Name + code;
+
             var content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json");
             using (HttpClient client = new HttpClient())
             {
-                var tot = await client.PostAsync(queryDictionary[dexOperation], content);
+                var tot = await client.PostAsync(postLink, content);
                 tot.EnsureSuccessStatusCode();
                 if (tot.IsSuccessStatusCode)
                 {
@@ -200,14 +169,15 @@ namespace DBManager
 
         public async Task<bool> Delete<T>(T model)
         {
-            var operation = "Delete";
+            var operation = "delete";
             var type = typeof(T);
-            var dexOperation = operation + type.Name;
             var jsonObject = JsonConvert.SerializeObject(model);
             var content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json");
+            var postLink = URL + operation + type.Name + code;
+
             using (HttpClient client = new HttpClient())
             {
-                var tot = await client.PostAsync(queryDictionary[dexOperation], content);
+                var tot = await client.PostAsync(postLink, content);
                 tot.EnsureSuccessStatusCode();
                 if (tot.IsSuccessStatusCode)
                 {

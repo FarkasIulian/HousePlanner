@@ -1,4 +1,5 @@
 ﻿using DBManager;
+using DevExpress.XtraEditors;
 using HousePlannerCore.Events;
 using HousePlannerCore.Models;
 using Prism.Events;
@@ -30,11 +31,11 @@ namespace HousePlanner.Views
         private DbManagerService _dbManager;
         private Button selectedButton;
         private Point initialDragPoint = new Point();
-        public RoomsView(IEventAggregator ea,IContainerProvider container)
+        public RoomsView(IEventAggregator ea,IContainerProvider container,DbManagerService db)
         {
             InitializeComponent();
             _eventAggregator = ea;
-            _dbManager = container.Resolve<DbManagerService>();
+            _dbManager = db;
             ea.GetEvent<OnTryInsertingRoom>().Subscribe(payload => AddRoomToCanvas(payload.Item1, payload.Item2));
             ea.GetEvent<OnResetCanvas>().Subscribe(RoomsGrid.Children.Clear);
             ea.GetEvent<OnModifiedRoom>().Subscribe(async (room) =>
@@ -161,7 +162,7 @@ namespace HousePlanner.Views
                     if (hitbox.IntersectsWith(rect))
                     {
                         if (showMessageBox)
-                            MessageBox.Show($"Collides with room: {((Button)child).Content}", "Room Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            XtraMessageBox.Show($"Collides with room: {((Button)child).Content}", "Room Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                         return true;
                     }
 
@@ -171,7 +172,7 @@ namespace HousePlanner.Views
             if (Canvas.GetLeft(buttonToAdd) + buttonToAdd.Width > RoomsGrid.Width || Canvas.GetTop(buttonToAdd) + buttonToAdd.Height > RoomsGrid.Height)
             {
                 if (showMessageBox)
-                    MessageBox.Show("Out of house layout", "Room Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    XtraMessageBox.Show("Out of house layout", "Room Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return true;
             }
 

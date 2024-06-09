@@ -12,6 +12,8 @@ using Prism.Ioc;
 using HousePlannerCore.Models;
 using System.Text.RegularExpressions;
 using System.Security;
+using DBManager;
+using DevExpress.XtraEditors;
 
 namespace HousePlanner.ViewModels
 {
@@ -69,13 +71,13 @@ namespace HousePlanner.ViewModels
 
         public ICommand SignupCommand => new DelegateCommand(SignUp);
 
-        private DBManager.DbManagerService _dbManager;
+        private DbManagerService _dbManager;
         private IEventAggregator _eventAggregator;
 
 
-        public SignUpViewModel(IEventAggregator ea, IContainerProvider containerProvider)
+        public SignUpViewModel(IEventAggregator ea, IContainerProvider containerProvider, DbManagerService db)
         {
-            _dbManager = containerProvider.Resolve<DBManager.DbManagerService>();
+            _dbManager = db;
             _eventAggregator = ea;
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);
             _eventAggregator.GetEvent<OnSendSignUpPassword>().Subscribe((payload) =>
@@ -129,7 +131,7 @@ namespace HousePlanner.ViewModels
                 };
                 if (await _dbManager.Insert(user) != -1)
                 {
-                    MessageBox.Show("Succesfully signed up!");
+                    XtraMessageBox.Show("Succesfully signed up!");
                     ResetValues();
                 }
             }

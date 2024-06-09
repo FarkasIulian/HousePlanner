@@ -20,5 +20,6 @@ namespace HousePlanner.Views
         {
             InitializeComponent();
         }
+
     }
 }

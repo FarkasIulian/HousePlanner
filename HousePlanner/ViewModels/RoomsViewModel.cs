@@ -53,13 +53,13 @@ namespace HousePlanner.ViewModels
         }
 
         private Room SelectedRoom;
-        private DBManager.DbManagerService dbManager;
+        private DbManagerService dbManager;
         private IEventAggregator eventAggregator;
 
-        public RoomsViewModel(IEventAggregator ea, IContainerProvider container) 
+        public RoomsViewModel(IEventAggregator ea, IContainerProvider container,DbManagerService db) 
         {
             eventAggregator = ea;
-            dbManager = container.Resolve<DbManagerService>();
+            dbManager = db;
             
             eventAggregator.GetEvent<OnRoomRightClicked>().Subscribe(async (roomId) =>
             {

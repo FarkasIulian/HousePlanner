@@ -79,12 +79,12 @@ namespace HousePlanner.ViewModels
             LoadRooms();
         }
 
-        public MainWindowViewModel(IEventAggregator ea, IContainerProvider container)
+        public MainWindowViewModel(IEventAggregator ea, IContainerProvider container, DbManagerService db)
         {
             FloorNumber = 0;
             eventAggregator = ea;
             RoomsView = container.Resolve<RoomsView>();
-            dbManager = container.Resolve<DbManagerService>();
+            dbManager = db;
             eventAggregator.GetEvent<OnInsertedHouse>().Subscribe(Houses.Add, true);
             eventAggregator.GetEvent<OnRoomValidForInsertion>().Subscribe((room) =>
             {
@@ -137,7 +137,7 @@ namespace HousePlanner.ViewModels
             Houses.AddRange(houses);
             if (houses.Count() == 0)
             {
-                MessageBox.Show("Add new house layout to add rooms!\n Or select an existing layout!", "Add house", MessageBoxButton.OK, MessageBoxImage.Warning);
+                XtraMessageBox.Show("Add new house layout to add rooms!\n Or select an existing layout!", "Add house", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
                 eventAggregator.GetEvent<OnSendHouseData>().Publish((-1, -1));
 
             }
@@ -151,7 +151,7 @@ namespace HousePlanner.ViewModels
                 if (floorAction == "Up")
                     if (FloorNumber < SelectedHouse.NumberOfFloors)
                         FloorNumber++;
-                    else MessageBox.Show("Reached last floor");
+                    else XtraMessageBox.Show("Reached last floor");
                 else if (FloorNumber > 0)
                     FloorNumber--;
                 if (initialFloor != FloorNumber && !loading)
@@ -215,9 +215,16 @@ namespace HousePlanner.ViewModels
             }
             else
             {
-
+                var foundItems = await dbManager.GetFiltered<Item>(nameof(Item.Name), NameOfSearchedObject);
+                displayFoundObjects = $"Found {foundItems.Count()} that match provided name!\n";
+                foreach(var item in foundItems)
+                {
+                    var furniture = (await dbManager.GetFiltered<Furniture>(nameof(Furniture.Id), item.FurnitureId.ToString())).First();
+                    var room = (await dbManager.GetFiltered<Room>(nameof(Room.Id), furniture.RoomId.ToString())).First();
+                    displayFoundObjects += $"Name: {item.Name}  - Furniture Name: {furniture.Name}  - Room Name: {room.Name} - Floor: {room.Floor}\n";
+                }
             }
-            XtraMessageBox.Show(displayFoundObjects,"Search Results",System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Information);
+            XtraMessageBox.Show(displayFoundObjects, "Search Results", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 
 
         }

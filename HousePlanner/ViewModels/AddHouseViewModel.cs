@@ -45,9 +45,9 @@ namespace HousePlanner.ViewModels
         private DbManagerService _dbManager;
         private IEventAggregator _eventAggregator;
 
-        public AddHouseViewModel(IEventAggregator ea, IContainerProvider container )
+        public AddHouseViewModel(IEventAggregator ea, IContainerProvider container,DbManagerService db)
         {
-            _dbManager = container.Resolve<DBManager.DbManagerService>();
+            _dbManager = db;
             _eventAggregator = ea;
                 _eventAggregator.GetEvent<OnSendUserInformation>().Subscribe((user) => EmailTextBox = user.Email,true);
             _eventAggregator.GetEvent<OnCloseAddWindowResetTextBoxes>().Subscribe(ResetValues);

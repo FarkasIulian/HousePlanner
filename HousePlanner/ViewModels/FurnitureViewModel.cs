@@ -1,5 +1,6 @@
 ﻿using DBManager;
 using DevExpress.Mvvm;
+using DevExpress.XtraEditors;
 using HousePlannerCore.Events;
 using HousePlannerCore.Models;
 using Prism.Events;
@@ -71,7 +72,7 @@ namespace HousePlanner.ViewModels
         private DBManager.DbManagerService dbManager;
         private IEventAggregator eventAggregator;
 
-        public FurnitureViewModel(IEventAggregator ea, IContainerProvider container)
+        public FurnitureViewModel(IEventAggregator ea, IContainerProvider container, DbManagerService manager)
         {
             eventAggregator = ea;
             eventAggregator.GetEvent<OnOpenRoom>().Subscribe(room => 
@@ -82,7 +83,7 @@ namespace HousePlanner.ViewModels
                 OpenedRoomName = openedRoom.Name;
 
             });
-            dbManager = container.Resolve<DbManagerService>();
+            dbManager = manager;
 
             eventAggregator.GetEvent<OnFurnitureRightClicked>().Subscribe(async (furnitureId) =>
             {
@@ -166,6 +167,11 @@ namespace HousePlanner.ViewModels
         private async void ShowItems()
         {
             var items = await dbManager.GetFiltered<Item>(nameof(Item.FurnitureId), selectedFurniture.Id.ToString());
+            string displayItems = $"Items in {selectedFurniture.Name}:\n";
+            foreach (var item in items)
+                displayItems += $"  - {item.Name}\n";
+
+            XtraMessageBox.Show(displayItems, "Items in Furniture", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 
         }
 
