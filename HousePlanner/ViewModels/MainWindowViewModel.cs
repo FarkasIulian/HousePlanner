@@ -212,6 +212,10 @@ namespace HousePlanner.ViewModels
                     displayFoundObjects += $"Name: {furniture.Name}  - Room Name: {room.Name} - Floor: {room.Floor}\n";
                 }
             }
+            else
+            {
+
+            }
             MessageBox.Show(displayFoundObjects);
                 
 

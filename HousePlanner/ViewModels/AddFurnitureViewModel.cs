@@ -62,7 +62,7 @@ namespace HousePlanner.ViewModels
             if (Errors == "")
             {
                 var furniture = new Furniture()
-                {
+                { 
                     RoomId = roomId,
                     Name = NameTextBox,
                     Width = int.Parse(WidthTextBox),

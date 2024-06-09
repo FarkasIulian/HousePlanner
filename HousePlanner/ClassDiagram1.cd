@@ -29,8 +29,8 @@
       <FileName>ViewModels\AddRoomAndFurnitureBase.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_dbManager" />
       <Field Name="_eventAggregator" />
+      <Field Name="_dbManager" />
     </ShowAsAssociation>
   </Class>
   <Class Name="HousePlanner.ViewModels.AddRoomViewModel">
@@ -47,10 +47,10 @@
       <FileName>ViewModels\FurnitureViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="dbManager" />
-      <Field Name="eventAggregator" />
       <Field Name="openedRoom" />
       <Field Name="selectedFurniture" />
+      <Field Name="dbManager" />
+      <Field Name="eventAggregator" />
     </ShowAsAssociation>
   </Class>
   <Class Name="HousePlanner.ViewModels.LoginViewModel">
@@ -67,13 +67,13 @@
   <Class Name="HousePlanner.ViewModels.MainWindowViewModel">
     <Position X="4.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgAIAAADACAAAIECAAAAACBAADAAQJBAAAAIcA=</HashCode>
+      <HashCode>AAAAQAgAIAAAjACAAAIECAAAAACBAADAAQJBAAAgIcA=</HashCode>
       <FileName>ViewModels\MainWindowViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="currentUser" />
       <Field Name="dbManager" />
       <Field Name="eventAggregator" />
-      <Field Name="currentUser" />
       <Property Name="SelectedHouse" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
@@ -87,9 +87,9 @@
       <FileName>ViewModels\RoomsViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="SelectedRoom" />
       <Field Name="dbManager" />
       <Field Name="eventAggregator" />
-      <Field Name="SelectedRoom" />
     </ShowAsAssociation>
   </Class>
   <Class Name="HousePlanner.ViewModels.SignUpViewModel">
@@ -143,8 +143,8 @@
       <FileName>Views\FurnitureView.xaml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_dbManager" />
       <Field Name="_eventAggregator" />
+      <Field Name="_dbManager" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -166,8 +166,8 @@
       <FileName>Views\RoomsView.xaml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_dbManager" />
       <Field Name="_eventAggregator" />
+      <Field Name="_dbManager" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -186,7 +186,7 @@
     <Position X="4.5" Y="0.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="HousePlannerCore.Models.Furniture" Collapsed="true">
+  <Class Name="HousePlannerCore.Models.Furniture">
     <Position X="6.5" Y="16" Width="1.5" />
     <TypeIdentifier />
   </Class>
@@ -194,7 +194,7 @@
     <Position X="13.5" Y="7.25" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="HousePlannerCore.Models.User" Collapsed="true">
+  <Class Name="HousePlannerCore.Models.User">
     <Position X="0.5" Y="3.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
