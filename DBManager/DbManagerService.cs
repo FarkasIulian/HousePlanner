@@ -34,8 +34,19 @@ namespace DBManager
             { "GetAllRoom","https://initdb.azurewebsites.net/api/getAllRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
             { "GetFilteredRoom","https://initdb.azurewebsites.net/api/filteredGetRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
             { "DeleteRoom","https://initdb.azurewebsites.net/api/deleteRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
-            { "UpdateRoom","https://initdb.azurewebsites.net/api/updateRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" }
+            { "UpdateRoom","https://initdb.azurewebsites.net/api/updateRoom?code=TBbHph8oLYfvtS4bT_-DKEan1sWi0LjPDp7H9USwD8bxAzFu_ez-DQ%3D%3D" },
+            
+            {"InsertItem", "https://initdb.azurewebsites.net/api/insertIntoDBItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" },
+            {"GetAllItem", "https://initdb.azurewebsites.net/api/getAllItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" },
+            {"GetFilteredItem", "https://initdb.azurewebsites.net/api/filteredGetItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" },
+            {"DeleteItem", "https://initdb.azurewebsites.net/api/deleteItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" },
+            {"UpdateItem", "https://initdb.azurewebsites.net/api/updateItem?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D" }
         };
+
+
+        private string URL = "https://initdb.azurewebsites.net/api/";
+        private string code = "?code=e3hxmCUEwdgLGJbM_fJWQvXogM5j6MimlvIo34lzAVruAzFu-cX2QQ%3D%3D";
+
 
         private static string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=testingfirstazuredemo;AccountKey=O3/UjkVlO63CK8HnuuCTp+TldwPjexDUhwYzXYdEEQfDBjKuc0cLginUXVhaMbiO0SLxupMkMgx6+ASt5lgfmg==;EndpointSuffix=core.windows.net";
         private static CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
@@ -84,6 +95,7 @@ namespace DBManager
             var dexOperation = operation + type.Name;
             var jsonObject = JsonConvert.SerializeObject(model);
             var content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json");
+            var postLink = URL + dexOperation + code;
             using (HttpClient client = new HttpClient())
             {
                 var tot = await client.PostAsync(queryDictionary[dexOperation], content);

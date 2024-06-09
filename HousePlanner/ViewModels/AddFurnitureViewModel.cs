@@ -40,6 +40,8 @@ namespace HousePlanner.ViewModels
             _eventAggregator.GetEvent<OnRightClickSendPoint>().Subscribe(
                 point => position = point);
             ResetValues();
+
+            _dbManager.Insert(new Item() { Name = "Test" });
         }
 
         protected override void CheckForErrors()

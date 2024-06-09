@@ -129,7 +129,7 @@ namespace HousePlanner.ViewModels
                 };
                 if (await _dbManager.Insert(user) != -1)
                 {
-                    MessageBox.Show("Inserted");
+                    MessageBox.Show("Succesfully signed up!");
                     ResetValues();
                 }
             }

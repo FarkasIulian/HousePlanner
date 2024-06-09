@@ -1,5 +1,6 @@
 ﻿using DBManager;
 using DevExpress.Mvvm;
+using DevExpress.XtraEditors;
 using HousePlanner.Views;
 using HousePlannerCore.Events;
 using HousePlannerCore.Models;
@@ -216,8 +217,7 @@ namespace HousePlanner.ViewModels
             {
 
             }
-            MessageBox.Show(displayFoundObjects);
-                
+            XtraMessageBox.Show(displayFoundObjects,"Search Results",System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Information);
 
 
         }

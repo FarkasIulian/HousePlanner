@@ -5,7 +5,7 @@ namespace HousePlannerCore.Models
 {
     public class Room
     {
-        public long Id { get; set; } = 0;
+        public long Id { get; set; }
         public string Name { get; set; }
         public long HouseId { get; set; }
         public int Width { get; set; }

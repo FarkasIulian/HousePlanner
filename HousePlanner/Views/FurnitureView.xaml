@@ -44,6 +44,14 @@
 
                         </MenuItem>
                         <MenuItem Header="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Visibility="{Binding ModifyFurnitureOptions}"/>
+                        <MenuItem Header="Add new item" Command="{Binding AddItemCommand}" Visibility="{Binding ModifyFurnitureOptions}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Name: " FontSize="16"/>
+                                <TextBox Text="{Binding ItemName}" FontSize="16" Width="70" />
+                                <Button Command="{Binding AddItemCommand}" FontSize="16" Width="30" Content="Ok"/>
+                            </StackPanel>
+                        </MenuItem>
+                        <MenuItem Header="Show Items" Command="{Binding ShowItemsCommand}" Visibility="{Binding ModifyFurnitureOptions}"/>
                     </ContextMenu>
                 </Canvas.ContextMenu>
 

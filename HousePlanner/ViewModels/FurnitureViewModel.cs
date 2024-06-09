@@ -17,8 +17,6 @@ namespace HousePlanner.ViewModels
 {
     public class FurnitureViewModel : BindableBase
     {
-
-
         public string SelectedFurnitureName
         {
             get => GetValue<string>();
@@ -40,23 +38,33 @@ namespace HousePlanner.ViewModels
             get => GetValue<string>();
             set => SetValue(value);
         }
-
         public Image SelectedFurniturePicture
         {
             get => GetValue<Image>();
             set => SetValue(value);
         }
-
         public Visibility ModifyFurnitureOptions
         {
             get => GetValue<Visibility>();
             set => SetValue(value);
         }
 
+        public string ItemName
+        {
+            get => GetValue<string>();
+            set => SetValue(value); 
+        }
+        
+
+
         public System.Windows.Input.ICommand AddNewFurnitureCommand => new DelegateCommand(AddFurniture);
         public ICommand ModifyFurnitureCommand => new DelegateCommand(ModifyFurniture);
 
         public ICommand DeleteFurnitureCommand => new DelegateCommand(DeleteFurniture);
+
+        public ICommand AddItemCommand => new DelegateCommand(AddItem);
+
+        public ICommand ShowItemsCommand => new DelegateCommand(ShowItems);
 
         private Room openedRoom;
         private Furniture selectedFurniture;
@@ -140,6 +148,28 @@ namespace HousePlanner.ViewModels
             }
 
         }
+
+        private async void AddItem()
+        {
+            if (!string.IsNullOrEmpty(ItemName))
+            {
+                var item = new Item()
+                {
+                    Name = ItemName,
+                    FurnitureId = selectedFurniture.Id
+                };
+
+                await dbManager.Insert(item);
+            }
+        }
+
+        private async void ShowItems()
+        {
+            var items = await dbManager.GetFiltered<Item>(nameof(Item.FurnitureId), selectedFurniture.Id.ToString());
+
+        }
+
+
 
     }
 }
