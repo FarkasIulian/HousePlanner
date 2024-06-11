@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "appInsights1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/microsoft.insights/components/testingazuredemo1",
+      "type": "appInsights.azure",
+      "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING"
+    },
+    "storage1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/testingazuredemo1/providers/Microsoft.ServiceLinker/linkers/AzureWebJobsStorage_EE5B8F777F, /subscriptions/87f6267c-21b3-4f4d-9f81-fc449ec64209/resourceGroups/TestingFirstDemo/providers/Microsoft.Web/sites/testingazuredemo1/providers/Microsoft.ServiceLinker/linkers/AzureWebJobsStorage_D82E3C032E",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/testingfirstazuredemo",
+      "type": "storage.azure",
+      "connectionId": "AzureWebJobsStorage",
+      "dynamicId": null
+    }
+  }
+}
