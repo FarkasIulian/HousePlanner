@@ -14,8 +14,8 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -100,7 +100,7 @@ Width="150">
             FontSize="16"
     Text="Errors: "
     />
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Grid.Column="1">
+        <ScrollViewer Grid.Row="2" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" Grid.Column="1">
             <TextBlock
             
             FontSize="16"

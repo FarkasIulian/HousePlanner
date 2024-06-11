@@ -39,12 +39,12 @@ namespace HousePlanner.Views
             ea.GetEvent<OnModifiedFurniture>().Subscribe(async (furniture) =>
             {
                 var index = FurnitureGrid.Children.IndexOf(selectedFurniture);
-                if(index == -1)
+                if (index == -1)
                 {
-                    foreach(var furnitureInRoom in FurnitureGrid.Children)
+                    foreach (var furnitureInRoom in FurnitureGrid.Children)
                     {
                         var image = furnitureInRoom as Image;
-                        if(image != null)
+                        if (image != null)
                         {
                             if (image.Uid == $"_{furniture.Id}")
                             {
@@ -63,7 +63,7 @@ namespace HousePlanner.Views
 
                 };
                 newFurniture.Stretch = System.Windows.Media.Stretch.None;
-                if (!IsHittingExistingFurniture(new System.Windows.Point(furniture.PositionInRoom.X, furniture.PositionInRoom.Y), newFurniture))
+                // if (!IsHittingExistingFurniture(new System.Windows.Point(furniture.PositionInRoom.X, furniture.PositionInRoom.Y), newFurniture))
                 {
                     ((Image)FurnitureGrid.Children[index]).Name = furniture.Name;
                     ((Image)FurnitureGrid.Children[index]).Width = furniture.Length;
@@ -100,7 +100,7 @@ namespace HousePlanner.Views
             Canvas.SetLeft(newFurniture, furniture.PositionInRoom.X);
             Canvas.SetTop(newFurniture, furniture.PositionInRoom.Y);
 
-            if (!IsHittingExistingFurniture(new System.Windows.Point(furniture.PositionInRoom.X, furniture.PositionInRoom.Y), newFurniture))
+            //  if (!IsHittingExistingFurniture(new System.Windows.Point(furniture.PositionInRoom.X, furniture.PositionInRoom.Y), newFurniture))
             {
                 FurnitureGrid.Children.Add(newFurniture);
                 if (insertIntoDb)
@@ -117,14 +117,23 @@ namespace HousePlanner.Views
 
         private void MoveMouse(object sender, MouseEventArgs e)
         {
-            var furniture = sender as Image;
-
-            if (e.MiddleButton == MouseButtonState.Pressed)
+            try
             {
-                selectedFurniture = furniture;
-                initialDragPoint.X = Canvas.GetLeft(selectedFurniture);
-                initialDragPoint.Y = Canvas.GetTop(selectedFurniture);
-                DragDrop.DoDragDrop(furniture, furniture, DragDropEffects.Move);
+                var furniture = sender as Image;
+
+                if (e.MiddleButton == MouseButtonState.Pressed)
+                {
+                    selectedFurniture = furniture;
+                    FurnitureGrid.Children.Remove(selectedFurniture);
+                    FurnitureGrid.Children.Add(selectedFurniture);
+                    initialDragPoint.X = Canvas.GetLeft(selectedFurniture);
+                    initialDragPoint.Y = Canvas.GetTop(selectedFurniture);
+                    DragDrop.DoDragDrop(furniture, furniture, DragDropEffects.Move);
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
@@ -153,9 +162,6 @@ namespace HousePlanner.Views
             e.Cancel = true;
             this.Hide();
         }
-
-
-
 
         private bool IsHittingExistingFurniture(System.Windows.Point clickedPoint, Image furnitureToAdd, bool showMessageBox = true)
         {
@@ -191,18 +197,13 @@ namespace HousePlanner.Views
         {
             var dropLocation = e.GetPosition(FurnitureGrid);
 
-            if (!IsHittingExistingFurniture(dropLocation, selectedFurniture))
-            {
-                Canvas.SetLeft(selectedFurniture, dropLocation.X);
-                Canvas.SetTop(selectedFurniture, dropLocation.Y);
-                _eventAggregator.GetEvent<OnChangedFurniturePosition>().Publish((int.Parse(selectedFurniture.Uid.Trim('_')), dropLocation.X, dropLocation.Y));
-            }
-            else
-            {
 
-                Canvas.SetLeft(selectedFurniture, initialDragPoint.X);
-                Canvas.SetTop(selectedFurniture, initialDragPoint.Y);
-            }
+            
+
+            Canvas.SetLeft(selectedFurniture, dropLocation.X);
+            Canvas.SetTop(selectedFurniture, dropLocation.Y);
+            _eventAggregator.GetEvent<OnChangedFurniturePosition>().Publish((int.Parse(selectedFurniture.Uid.Trim('_')), dropLocation.X, dropLocation.Y));
+
 
 
         }

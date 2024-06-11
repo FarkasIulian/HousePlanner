@@ -7,6 +7,7 @@ using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -82,6 +83,13 @@ namespace HousePlanner.ViewModels
         private void SelectPicture()
         {
             OpenFileDialog dialog = new OpenFileDialog();
+            var codecs = ImageCodecInfo.GetImageEncoders();
+            var codecFilter = "Image Files|";
+            foreach (var codec in codecs)
+            {
+                codecFilter += codec.FilenameExtension + ";";
+            }
+            dialog.Filter = codecFilter;
             dialog.ShowDialog();
             ImageTextBlock = dialog.FileName;
         }
