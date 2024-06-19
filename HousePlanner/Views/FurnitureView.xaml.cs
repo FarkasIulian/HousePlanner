@@ -34,7 +34,7 @@ namespace HousePlanner.Views
             InitializeComponent();
             _eventAggregator = ea;
             _dbManager = db;
-            ea.GetEvent<OnTryInsertingFurniture>().Subscribe(payload => AddRoomToCanvas(payload.Item1, payload.Item2));
+            ea.GetEvent<OnTryInsertingFurniture>().Subscribe(payload => AddFurnitureToCanvas(payload.Item1, payload.Item2));
             ea.GetEvent<OnResetFurnitureCanvas>().Subscribe(FurnitureGrid.Children.Clear);
             ea.GetEvent<OnModifiedFurniture>().Subscribe(async (furniture) =>
             {
@@ -81,7 +81,7 @@ namespace HousePlanner.Views
 
         }
 
-        private async void AddRoomToCanvas(Furniture furniture, bool insertIntoDb = false)
+        private async void AddFurnitureToCanvas(Furniture furniture, bool insertIntoDb = false)
         {
             Image newFurniture = new Image()
             {
@@ -93,26 +93,19 @@ namespace HousePlanner.Views
             newFurniture.Stretch = System.Windows.Media.Stretch.Fill;
             if (!File.Exists(furniture.Picture))
                 await _dbManager.DownloadPicture(furniture.Picture);
-
             newFurniture.Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "\\" + furniture.Picture, UriKind.RelativeOrAbsolute));
             newFurniture.MouseMove += MoveMouse;
             newFurniture.PreviewMouseRightButtonDown += EnableModifyOptions;
             Canvas.SetLeft(newFurniture, furniture.PositionInRoom.X);
             Canvas.SetTop(newFurniture, furniture.PositionInRoom.Y);
 
-            //  if (!IsHittingExistingFurniture(new System.Windows.Point(furniture.PositionInRoom.X, furniture.PositionInRoom.Y), newFurniture))
+            FurnitureGrid.Children.Add(newFurniture);
+            if (insertIntoDb)
             {
-                FurnitureGrid.Children.Add(newFurniture);
-                if (insertIntoDb)
-                {
-                    furniture.Picture = Path.GetFileName(furniture.Picture);
-                    var id = await _dbManager.Insert(furniture);
-                    newFurniture.Uid = $"_{id}";
-
-                }
+                furniture.Picture = Path.GetFileName(furniture.Picture);
+                var id = await _dbManager.Insert(furniture);
+                newFurniture.Uid = $"_{id}";
             }
-
-
         }
 
         private void MoveMouse(object sender, MouseEventArgs e)
@@ -198,7 +191,7 @@ namespace HousePlanner.Views
             var dropLocation = e.GetPosition(FurnitureGrid);
 
 
-            
+
 
             Canvas.SetLeft(selectedFurniture, dropLocation.X);
             Canvas.SetTop(selectedFurniture, dropLocation.Y);

@@ -22,10 +22,11 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <Canvas x:Name="FurnitureGrid" DragOver="FurnitureGrid_DragOver" AllowDrop="True" Drop="FurnitureGrid_Drop" Width="1750" Height="900" Background="LightBlue" Grid.Row="1" Grid.Column="1" PreviewMouseRightButtonDown="FurnitureGrid_PreviewMouseRightButtonDown">
+            <Canvas x:Name="FurnitureGrid" DragOver="FurnitureGrid_DragOver" AllowDrop="True" Drop="FurnitureGrid_Drop" 
+                    Width="1750" Height="900" Background="LightBlue" Grid.Row="1" Grid.Column="1"
+                    PreviewMouseRightButtonDown="FurnitureGrid_PreviewMouseRightButtonDown">
                 <Canvas.ContextMenu>
                     <ContextMenu FontSize="14">
-
                         <MenuItem Header="Add new Furniture" Command="{Binding AddNewFurnitureCommand}" />
                         <MenuItem Header="Modify Furniture" Visibility="{Binding ModifyFurnitureOptions}">
                             <StackPanel Orientation="Horizontal">
@@ -41,25 +42,42 @@
                                 <TextBox Margin="10,0,0,0" Text="{Binding SelectedFurnitureLength}"/>
                             </StackPanel>
                             <Button Command="{Binding ModifyFurnitureCommand}" Content="Save" />
-
                         </MenuItem>
                         <MenuItem Header="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Visibility="{Binding ModifyFurnitureOptions}"/>
-                        <MenuItem Header="Add new item" Command="{Binding AddItemCommand}" Visibility="{Binding ModifyFurnitureOptions}">
+                        <MenuItem Header="Add new item" Visibility="{Binding ModifyFurnitureOptions}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Name: " FontSize="16"/>
                                 <TextBox Text="{Binding ItemName}" FontSize="14" Margin="10,0,10,0" Width="100" />
                                 <Button Command="{Binding AddItemCommand}" FontSize="14" Width="50" Content="Ok"/>
                             </StackPanel>
                         </MenuItem>
+                        <MenuItem Header="Delete an item">
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Margin="10,0,10,0" Width="100" ItemsSource="{Binding ItemsInFurniture}" SelectedItem="{Binding SelectedItem}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel LastChildFill="True">
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button FontSize="14" Width="50" Content="Ok" Command="{Binding DeleteItemCommand}"/>
+                            </StackPanel>
+                        </MenuItem>
                         <MenuItem Header="Show Items" Command="{Binding ShowItemsCommand}" Visibility="{Binding ModifyFurnitureOptions}"/>
                     </ContextMenu>
                 </Canvas.ContextMenu>
-
             </Canvas>
 
+            
+            
+            
+            
+            
             <dock:DockLayoutManager>
                 <dock:LayoutGroup>
-                    
+
                 </dock:LayoutGroup>
             </dock:DockLayoutManager>
 

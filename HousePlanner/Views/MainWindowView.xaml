@@ -8,13 +8,10 @@
         xmlns:local="clr-namespace:HousePlanner.Views"
         xmlns:mvvm="http://prismlibrary.com/"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             mvvm:ViewModelLocator.AutoWireViewModel="True"
-        mc:Ignorable="d"
-            >
+        mvvm:ViewModelLocator.AutoWireViewModel="True"
+        mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-
         <Grid>
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition />
@@ -45,8 +42,6 @@
                             <i:InvokeCommandAction Command="{Binding HouseSelectionChanged}" CommandParameter="{Binding ElementName=HouseComboBox, Path=SelectedItem}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-
-
                 </ComboBox>
                 <Button Margin="20,50,25,0" Height="100" FontSize="16" Content="New House Layout" 
                         Command="{Binding AddNewHouseCommand}"/>
@@ -57,20 +52,19 @@
                     <TextBlock Margin="0,0,15,0" Text="Search for: " FontSize="16"/>
                     <ComboBox FontSize="16" x:Name="TypeComboBox" SelectedIndex="0" >
                         <ComboBoxItem Content="Room" FontSize="16"/>
-                        <ComboBoxItem Content ="Furniture" FontSize="16"/> 
-                        <ComboBoxItem Content ="Item" FontSize="16"/> 
+                        <ComboBoxItem Content ="Furniture" FontSize="16"/>
+                        <ComboBoxItem Content ="Item" FontSize="16"/>
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Margin="20,20,25,0" Orientation="Horizontal">
                     <TextBlock Text="Name: " FontSize="16"/>
                     <TextBox Text="{Binding NameOfSearchedObject}" Width="120" FontSize="16"/>
                 </StackPanel>
-                <Button Margin="20,30,25,0" Height="100" FontSize="16" CommandParameter="{Binding ElementName=TypeComboBox,Path=SelectedItem.Content}" Content="Search!" Command="{Binding SearchCommand}"/>
+                <Button Margin="20,30,25,0" Height="100" FontSize="16"
+                        CommandParameter="{Binding ElementName=TypeComboBox,Path=SelectedItem.Content}"
+                        Content="Search!" Command="{Binding SearchCommand}"/>
             </StackPanel>
             <ContentControl Content="{Binding RoomsView}" Grid.Row="1" Grid.Column="1"/>
-
-
         </Grid>
     </ScrollViewer>
-
 </UserControl>

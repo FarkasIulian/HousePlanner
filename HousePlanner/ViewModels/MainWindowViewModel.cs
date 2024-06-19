@@ -158,7 +158,6 @@ namespace HousePlanner.ViewModels
                 {
                     eventAggregator.GetEvent<OnResetCanvas>().Publish();
                     LoadRooms();
-                    eventAggregator.GetEvent<OnSendHouseData>().Publish((SelectedHouse.Id, FloorNumber));
                 }
                 else
                     eventAggregator.GetEvent<OnSendHouseData>().Publish((-1, -1));
@@ -180,7 +179,12 @@ namespace HousePlanner.ViewModels
                 {
                     var furnitureList = await dbManager.GetFiltered<Furniture>(nameof(Furniture.RoomId), room.Id.ToString());
                     foreach (var furniture in furnitureList)
+                    {
+                        var items = await dbManager.GetFiltered<Item>(nameof(Item.FurnitureId), furniture.Id.ToString());
+                        foreach (var item in items)
+                            await dbManager.Delete(item);
                         await dbManager.Delete(furniture);
+                    }
                     await dbManager.Delete(room);
                 }
 
@@ -225,8 +229,6 @@ namespace HousePlanner.ViewModels
                 }
             }
             XtraMessageBox.Show(displayFoundObjects, "Search Results", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
-
-
         }
 
 

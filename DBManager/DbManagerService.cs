@@ -64,13 +64,13 @@ namespace DBManager
             var postLink = URL + operation + type.Name + code;
             using (HttpClient client = new HttpClient())
             {
-                var tot = await client.PostAsync(postLink, content);
-                tot.EnsureSuccessStatusCode();
-                if (tot.IsSuccessStatusCode)
+                var messageResponse = await client.PostAsync(postLink, content);
+                messageResponse.EnsureSuccessStatusCode();
+                if (messageResponse.IsSuccessStatusCode)
                 {
                     try
                     {
-                        var response = await tot.Content.ReadAsStringAsync();
+                        var response = await messageResponse.Content.ReadAsStringAsync();
                         int id = JsonConvert.DeserializeObject<int>(response);
                         return id;
                     }
@@ -92,13 +92,13 @@ namespace DBManager
             using (HttpClient client = new HttpClient())
             {
 
-                var tot = await client.GetAsync(postLink);
-                tot.EnsureSuccessStatusCode();
-                if (tot.IsSuccessStatusCode)
+                var messageResponse = await client.GetAsync(postLink);
+                messageResponse.EnsureSuccessStatusCode();
+                if (messageResponse.IsSuccessStatusCode)
                 {
                     try
                     {
-                        var json = await tot.Content.ReadAsStringAsync();
+                        var json = await messageResponse.Content.ReadAsStringAsync();
                         var lista = JsonConvert.DeserializeObject<List<T>>(json);
                         return lista;
                     }
@@ -116,18 +116,16 @@ namespace DBManager
         {
             var operation = "filteredGet";
             var type = typeof(T);
-            
             var postLink = URL + operation + type.Name + code;
-
             using (HttpClient client = new HttpClient())
             {
-                var tot = await client.GetAsync(postLink + $"&columnName={columnName}&columnValue={value}");
-                tot.EnsureSuccessStatusCode();
-                if (tot.IsSuccessStatusCode)
+                var messageResponse = await client.GetAsync(postLink + $"&columnName={columnName}&columnValue={value}");
+                messageResponse.EnsureSuccessStatusCode();
+                if (messageResponse.IsSuccessStatusCode)
                 {
                     try
                     {
-                        var json = await tot.Content.ReadAsStringAsync();
+                        var json = await messageResponse.Content.ReadAsStringAsync();
                         var lista = JsonConvert.DeserializeObject<List<T>>(json);
                         return lista;
                     }
@@ -150,9 +148,9 @@ namespace DBManager
             var content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json");
             using (HttpClient client = new HttpClient())
             {
-                var tot = await client.PostAsync(postLink, content);
-                tot.EnsureSuccessStatusCode();
-                if (tot.IsSuccessStatusCode)
+                var messageResponse = await client.PostAsync(postLink, content);
+                messageResponse.EnsureSuccessStatusCode();
+                if (messageResponse.IsSuccessStatusCode)
                 {
                     try
                     {
@@ -177,9 +175,9 @@ namespace DBManager
 
             using (HttpClient client = new HttpClient())
             {
-                var tot = await client.PostAsync(postLink, content);
-                tot.EnsureSuccessStatusCode();
-                if (tot.IsSuccessStatusCode)
+                var messageResponse = await client.PostAsync(postLink, content);
+                messageResponse.EnsureSuccessStatusCode();
+                if (messageResponse.IsSuccessStatusCode)
                 {
                     try
                     {

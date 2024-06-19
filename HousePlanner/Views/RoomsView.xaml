@@ -9,7 +9,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" >
     <Grid>
-        <Canvas x:Name="RoomsGrid" DragOver="RoomsGrid_DragOver" AllowDrop="True" Drop="RoomsGrid_Drop" Width="1350" Height="900" Background="LightBlue" PreviewMouseRightButtonDown="RoomsGrid_PreviewMouseRightButtonDown">
+        <Canvas x:Name="RoomsGrid" DragOver="RoomsGrid_DragOver"
+                AllowDrop="True"
+                Drop="RoomsGrid_Drop"
+                Width="1350" Height="900"
+                Background="LightBlue"
+                PreviewMouseRightButtonDown="RoomsGrid_PreviewMouseRightButtonDown">
             <Canvas.ContextMenu>
                 <ContextMenu Visibility="{Binding CanAddRoom}">
 

@@ -1,5 +1,6 @@
 ﻿using DBManager;
 using DevExpress.Mvvm;
+using DevExpress.XtraEditors;
 using HousePlannerCore.Events;
 using HousePlannerCore.Models;
 using Prism.Events;
@@ -101,15 +102,32 @@ namespace HousePlanner.ViewModels
         }
         private void ModifyRoom()
         {
-            SelectedRoom.Name = SelectedRoomName;
-            SelectedRoom.Width = int.Parse(SelectedRoomWidth);
-            SelectedRoom.Length = int.Parse(SelectedRoomLength);
-            eventAggregator.GetEvent<OnModifiedRoom>().Publish(SelectedRoom);
+            int width, length;
+            bool parsedWidth = int.TryParse(SelectedRoomWidth, out width);
+            bool parsedLength = int.TryParse(SelectedRoomLength, out length);
+            if (parsedWidth && parsedLength)
+            {
+                SelectedRoom.Name = SelectedRoomName;
+                SelectedRoom.Width = width;
+                SelectedRoom.Length = length;
+                eventAggregator.GetEvent<OnModifiedRoom>().Publish(SelectedRoom);
+            }
+            else
+                XtraMessageBox.Show("Invalid values entered into width or length!", "Modify Room", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+
         }
 
         private async void DeleteRoom()
         {
             await dbManager.Delete(SelectedRoom);
+            var furnitureList = await dbManager.GetFiltered<Furniture>(nameof(Furniture.RoomId), SelectedRoom.Id.ToString());
+            foreach (var furniture in furnitureList)
+            {
+                var items = await dbManager.GetFiltered<Item>(nameof(Item.FurnitureId), furniture.Id.ToString());
+                foreach (var item in items)
+                    await dbManager.Delete(item);
+                await dbManager.Delete(furniture);
+            }
             eventAggregator.GetEvent<OnDeletedRoom>().Publish();
         }
 

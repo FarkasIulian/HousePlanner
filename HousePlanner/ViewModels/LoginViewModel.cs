@@ -57,16 +57,14 @@ namespace HousePlanner.ViewModels
 
         public ICommand LoginCommand => new DelegateCommand(LoginLogic);
         public ICommand SignupCommand => new DelegateCommand(SignUp);
-
         public ICommand ForgotPasswordCommand => new DelegateCommand(ForgotPassword);
-
-
 
 
         private DbManagerService dbManager;
         private IEventAggregator eventAggregator;
         private bool  isExecuting = false;
         private User? user;
+        private bool succesfullLogin = false;
 
 
         public LoginViewModel(IEventAggregator ea, IContainerProvider provider,DbManagerService db)
@@ -144,8 +142,12 @@ namespace HousePlanner.ViewModels
         {
             if (PasswordTextBox.Equals(user.Password))
             {
-                XtraMessageBox.Show("Login was succesful!","Succesful Login", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
-                eventAggregator.GetEvent<OnLoginClosed>().Publish(user);
+                if (!succesfullLogin)
+                {
+                    XtraMessageBox.Show("Login was succesful!", "Succesful Login", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    eventAggregator.GetEvent<OnLoginClosed>().Publish(user);
+                    succesfullLogin = true;
+                }
                 
             }
             else

@@ -1,4 +1,4 @@
-﻿using DBManager;
+﻿    using DBManager;
 using DevExpress.XtraEditors;
 using HousePlannerCore.Events;
 using HousePlannerCore.Models;
@@ -75,7 +75,8 @@ namespace HousePlanner.Views
             });
             ea.GetEvent<OnDeletedRoom>().Subscribe(() =>
             {
-                RoomsGrid.Children.Remove(selectedButton);
+                if(RoomsGrid.Children.Contains(selectedButton))
+                    RoomsGrid.Children.Remove(selectedButton);
             });
         }
 
@@ -111,19 +112,7 @@ namespace HousePlanner.Views
 
         }
 
-        private void MoveMouse(object sender, MouseEventArgs e)
-        {
-            var button = sender as Button;
-
-            if (e.MiddleButton == MouseButtonState.Pressed)
-            {
-                selectedButton = button;
-                initialDragPoint.X = Canvas.GetLeft(selectedButton);
-                initialDragPoint.Y = Canvas.GetTop(selectedButton);
-                DragDrop.DoDragDrop(button, button, DragDropEffects.Move);
-            }
-        }
-
+        
         private void EnableModifyOptions(object sender, MouseButtonEventArgs e)
         {
             selectedButton = sender as Button;
@@ -182,7 +171,6 @@ namespace HousePlanner.Views
         private void RoomsGrid_Drop(object sender, DragEventArgs e)
         {
             var dropLocation = e.GetPosition(RoomsGrid);
-
             if (!IsHittingExistingRoom(dropLocation, selectedButton))
             {
                 Canvas.SetLeft(selectedButton, dropLocation.X);
@@ -191,14 +179,22 @@ namespace HousePlanner.Views
             }
             else
             {
-
                 Canvas.SetLeft(selectedButton, initialDragPoint.X);
                 Canvas.SetTop(selectedButton, initialDragPoint.Y);
             }
-
-
         }
+        private void MoveMouse(object sender, MouseEventArgs e)
+        {
+            var button = sender as Button;
 
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            {
+                selectedButton = button;
+                initialDragPoint.X = Canvas.GetLeft(selectedButton);
+                initialDragPoint.Y = Canvas.GetTop(selectedButton);
+                DragDrop.DoDragDrop(button, button, DragDropEffects.Move);
+            }
+        }
         private void RoomsGrid_DragOver(object sender, DragEventArgs e)
         {
             var dropLocation = e.GetPosition(RoomsGrid);

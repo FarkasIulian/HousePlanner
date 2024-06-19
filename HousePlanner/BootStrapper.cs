@@ -21,8 +21,6 @@ namespace HousePlanner
         {
             ApplicationThemeHelper.ApplicationThemeName = Theme.VS2019DarkName;
             
-            Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            
             var rm = Container.Resolve<IRegionManager>();
             
             Container.Resolve<AddFurnitureView>();
@@ -51,7 +49,7 @@ namespace HousePlanner
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //to do when get home, remove reference to DbManagerService, initialize it in Core
+
         }
     }
 }

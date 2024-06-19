@@ -7,6 +7,7 @@ using Prism.Events;
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,9 +54,15 @@ namespace HousePlanner.ViewModels
         public string ItemName
         {
             get => GetValue<string>();
-            set => SetValue(value); 
+            set => SetValue(value);
         }
-        
+
+        public Item SelectedItem
+        {
+            get => GetValue<Item>();
+            set => SetValue(value);
+        }
+
 
 
         public System.Windows.Input.ICommand AddNewFurnitureCommand => new DelegateCommand(AddFurniture);
@@ -65,17 +72,22 @@ namespace HousePlanner.ViewModels
 
         public ICommand AddItemCommand => new DelegateCommand(AddItem);
 
+        public ICommand DeleteItemCommand => new DelegateCommand(DeleteItem);
+
         public ICommand ShowItemsCommand => new DelegateCommand(ShowItems);
+
+        public ObservableCollection<Item> ItemsInFurniture { get; set; }
 
         private Room openedRoom;
         private Furniture selectedFurniture;
         private DBManager.DbManagerService dbManager;
         private IEventAggregator eventAggregator;
 
+
         public FurnitureViewModel(IEventAggregator ea, IContainerProvider container, DbManagerService manager)
         {
             eventAggregator = ea;
-            eventAggregator.GetEvent<OnOpenRoom>().Subscribe(room => 
+            eventAggregator.GetEvent<OnOpenRoom>().Subscribe(room =>
             {
                 eventAggregator.GetEvent<OnResetFurnitureCanvas>().Publish();
                 openedRoom = room;
@@ -89,11 +101,15 @@ namespace HousePlanner.ViewModels
             {
                 if (furnitureId != -1)
                 {
+                    ItemsInFurniture = new ObservableCollection<Item>();
                     selectedFurniture = (await dbManager.GetFiltered<Furniture>(nameof(Furniture.Id), furnitureId.ToString())).First();
                     SelectedFurnitureWidth = selectedFurniture.Width.ToString();
                     SelectedFurnitureLength = selectedFurniture.Length.ToString();
                     SelectedFurnitureName = selectedFurniture.Name;
                     ModifyFurnitureOptions = Visibility.Visible;
+                    ItemsInFurniture.AddRange(await dbManager.GetFiltered<Item>(nameof(Item.FurnitureId), selectedFurniture.Id.ToString()));
+                    RaisePropertiesChanged(nameof(ItemsInFurniture));
+
                 }
                 else
                 {
@@ -112,9 +128,6 @@ namespace HousePlanner.ViewModels
                 }
 
             });
-
-
-
         }
 
         private void AddFurniture()
@@ -123,24 +136,33 @@ namespace HousePlanner.ViewModels
         }
         private async void ModifyFurniture()
         {
+            int width, length;
+            bool parsedWidth = int.TryParse(SelectedFurnitureWidth, out width);
+            bool parsedLength = int.TryParse(SelectedFurnitureLength, out length);
+            if (parsedWidth && parsedLength)
+            {
+                selectedFurniture.Name = SelectedFurnitureName;
+                selectedFurniture.Width = width;
+                selectedFurniture.Length = length;
+                eventAggregator.GetEvent<OnModifiedFurniture>().Publish(selectedFurniture);
+            }
+            else
+                XtraMessageBox.Show("Invalid values entered into width or length!", "Modify Furniture", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
 
-            selectedFurniture.Name = SelectedFurnitureName;
-            selectedFurniture.Width = int.Parse(SelectedFurnitureWidth);
-            selectedFurniture.Length = int.Parse(SelectedFurnitureLength);
-            eventAggregator.GetEvent<OnModifiedFurniture>().Publish(selectedFurniture);
         }
 
         private async void DeleteFurniture()
         {
             await dbManager.Delete(selectedFurniture);
-            //await dbManager.DeleteFromBlob(selectedFurniture.Picture);
+            foreach (var item in ItemsInFurniture)
+                await dbManager.Delete(item);
             eventAggregator.GetEvent<OnDeletedFurniture>().Publish();
         }
 
         private async void LoadFurniture(Room room)
         {
             var furnitureInRoom = await dbManager.GetFiltered<Furniture>(nameof(Furniture.RoomId), room.Id.ToString());
-            foreach(var furniture in furnitureInRoom)
+            foreach (var furniture in furnitureInRoom)
             {
                 Application.Current.Dispatcher.Invoke(delegate
                 {
@@ -159,16 +181,41 @@ namespace HousePlanner.ViewModels
                     Name = ItemName,
                     FurnitureId = selectedFurniture.Id
                 };
+                var insertId = await dbManager.Insert(item);
+                if (insertId != -1)
+                {
+                    item.Id = insertId;
+                    ItemsInFurniture.Add(item);
+                    XtraMessageBox.Show("Added succesfully!", "Items in Furniture", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 
-                await dbManager.Insert(item);
+                }
+
             }
         }
 
-        private async void ShowItems()
+
+        private async void DeleteItem()
         {
-            var items = await dbManager.GetFiltered<Item>(nameof(Item.FurnitureId), selectedFurniture.Id.ToString());
+            if (SelectedItem != null)
+            {
+                if (await dbManager.Delete(SelectedItem))
+                {
+                    
+                    XtraMessageBox.Show("Deleted succesfully!", "Items in Furniture", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    var index = ItemsInFurniture.IndexOf(SelectedItem);
+                    if(index != -1) 
+                        ItemsInFurniture.RemoveAt(index);
+                    SelectedItem = null;
+
+                }
+            }
+        }
+
+        private void ShowItems()
+        {
+
             string displayItems = $"Items in {selectedFurniture.Name}:\n";
-            foreach (var item in items)
+            foreach (var item in ItemsInFurniture)
                 displayItems += $"  - {item.Name}\n";
 
             XtraMessageBox.Show(displayItems, "Items in Furniture", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);

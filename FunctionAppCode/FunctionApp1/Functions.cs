@@ -35,16 +35,10 @@ namespace FunctionApp1
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertIntoDBUser")] HttpRequestMessage req,
             ILogger log)
         {
-
             var db = dbClient.GetDatabase("HousePlanner");
-
             var data = await req.Content.ReadAsAsync<User>();
-
             var collection = db.GetCollection<User>("User");
-
             long lastId = 0;
-
-
             if (collection.AsQueryable().Count() != 0)
             {
                 try
@@ -56,16 +50,12 @@ namespace FunctionApp1
                 catch (Exception ex)
                 {
                     log.LogError(ex.ToString());
-                    return -1; 
+                    return -1;
                 }
             }
             data.Id = lastId;
-
             collection.InsertOne(data);
-
             log.LogInformation($"Inserted {data} from HousePlanner DB");
-
-
             return lastId;
         }
 
@@ -75,8 +65,6 @@ namespace FunctionApp1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "getAllUser")] HttpRequest req,
             ILogger log)
         {
-
-            List<User> list = new List<User>();
 
             var db = dbClient.GetDatabase("HousePlanner");
 
@@ -107,8 +95,8 @@ namespace FunctionApp1
 
             return new OkResult();
         }
-       
-        
+
+
         [FunctionName("FilteredGetUser")]
         public static async Task<List<User>> FilteredGetUser(
          [HttpTrigger(AuthorizationLevel.Function, "get", Route = "filteredGetUser")] HttpRequest req,
@@ -123,7 +111,6 @@ namespace FunctionApp1
 
             var collection = db.GetCollection<User>("User");
 
-            // Retrieve filtered data
             var filteredData = await collection.Find(filter).ToListAsync();
 
             return filteredData;
@@ -136,21 +123,14 @@ namespace FunctionApp1
         {
 
             var db = dbClient.GetDatabase("HousePlanner");
-
             var data = await req.Content.ReadAsAsync<User>();
-
             var collection = db.GetCollection<User>("User");
-
             var filter = Builders<User>.Filter.Eq("Id", data.Id);
-
             UpdateDefinition<User> update = Builders<User>.Update
                 .Set(u => u.Email, data.Email)
                 .Set(u => u.Password, data.Password);
-
             collection.UpdateOne(filter, update);
-
             log.LogInformation($"Updated user with Id {data.Id} from HousePlanner DB");
-
             return new OkResult();
         }
 
@@ -344,7 +324,7 @@ namespace FunctionApp1
             var db = dbClient.GetDatabase("HousePlanner");
 
             var collection = db.GetCollection<Furniture>("Furniture");
-            
+
             return collection.AsQueryable().ToList();
         }
 
@@ -404,7 +384,7 @@ namespace FunctionApp1
             var collection = db.GetCollection<Furniture>("Furniture");
 
             var filter = Builders<Furniture>.Filter.Eq("Id", data.Id);
-            
+
             UpdateDefinition<Furniture> update = Builders<Furniture>.Update
                 .Set(f => f.Name, data.Name)
                 .Set(f => f.RoomId, data.RoomId)
@@ -412,9 +392,9 @@ namespace FunctionApp1
                 .Set(f => f.Length, data.Length)
                 .Set(f => f.PositionInRoom, data.PositionInRoom)
                 .Set(f => f.Picture, data.Picture)
-                .Set(f => f.ItemsInFurniture,data.ItemsInFurniture);
-            
-            
+                .Set(f => f.ItemsInFurniture, data.ItemsInFurniture);
+
+
             collection.UpdateOne(filter, update);
 
             log.LogInformation($"Updated Furniture with Id {data.Id} from HousePlanner DB");
@@ -537,7 +517,7 @@ namespace FunctionApp1
             var filter = Builders<House>.Filter.Eq("Id", data.Id);
 
             UpdateDefinition<House> update = Builders<House>.Update
-                .Set(h=>h.Name,data.Name)
+                .Set(h => h.Name, data.Name)
                 .Set(h => h.NumberOfFloors, data.NumberOfFloors)
                 .Set(h => h.OwnerEmail, data.OwnerEmail);
 
